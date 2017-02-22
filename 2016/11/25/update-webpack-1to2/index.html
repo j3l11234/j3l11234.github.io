@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Webpack 1 更新到 Webpack 2 的蹚坑记 | JS工作室</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="真的就是手痒才更新到2的…
+
+##更新
+
+　　写此文时，webpack更新到2.1.0-beta.27。
+首先运行更新命令：npm install webpack@2.1.0-beta.27 --save-dev如果要全局更新就使用：npm install webpack@2.1.0-beta.27 --save-dev
+　　更新完之后，webpack 2 兼容老版本的配置，所以直接运行是没">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Webpack 1 更新到 Webpack 2 的蹚坑记">
+<meta property="og:url" content="http://blog.j3l11234.com/2016/11/25/update-webpack-1to2/index.html">
+<meta property="og:site_name" content="JS工作室">
+<meta property="og:description" content="真的就是手痒才更新到2的…
+
+##更新
+
+　　写此文时，webpack更新到2.1.0-beta.27。
+首先运行更新命令：npm install webpack@2.1.0-beta.27 --save-dev如果要全局更新就使用：npm install webpack@2.1.0-beta.27 --save-dev
+　　更新完之后，webpack 2 兼容老版本的配置，所以直接运行是没">
+<meta property="og:updated_time" content="2016-11-25T10:27:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Webpack 1 更新到 Webpack 2 的蹚坑记">
+<meta name="twitter:description" content="真的就是手痒才更新到2的…
+
+##更新
+
+　　写此文时，webpack更新到2.1.0-beta.27。
+首先运行更新命令：npm install webpack@2.1.0-beta.27 --save-dev如果要全局更新就使用：npm install webpack@2.1.0-beta.27 --save-dev
+　　更新完之后，webpack 2 兼容老版本的配置，所以直接运行是没">
+  
+    <link rel="alternate" href="/atom.xml" title="JS工作室" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">JS工作室</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.j3l11234.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-update-webpack-1to2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/25/update-webpack-1to2/" class="article-date">
+  <time datetime="2016-11-25T09:41:41.000Z" itemprop="datePublished">2016-11-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Webpack 1 更新到 Webpack 2 的蹚坑记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>　　真的就是手痒才更新到2的…</p>
+</blockquote>
+<p>##更新</p>
+<hr>
+<p>　　写此文时，webpack更新到2.1.0-beta.27。</p>
+<p>首先运行更新命令：<br><code>npm install webpack@2.1.0-beta.27 --save-dev</code><br>如果要全局更新就使用：<br><code>npm install webpack@2.1.0-beta.27 --save-dev</code></p>
+<p>　　更新完之后，webpack 2 兼容老版本的配置，所以直接运行是没有问题的。据说 webpack 2 的 <strong>tree-shaking</strong> 还可以优化体积。  </p>
+<p>##迁移</p>
+<hr>
+<p>　　去webpack官网扫了一眼，虽然v2兼容v1的，但v2修改了配置文件的语法。<br><a href="https://webpack.js.org/guides/migrating/" target="_blank" rel="external">https://webpack.js.org/guides/migrating/</a></p>
+<p>　　列举影响最深的两条:</p>
+<blockquote>
+<p>####<code>module.loaders</code> is now <code>module.rules</code><br>The old loader configuration was superseded by a more powerful rules system, which allows configuration of loaders and more. For compatibility reasons, the old module.loaders syntax is still valid and the old names are parsed. The new naming conventions are easier to understand and are a good reason to upgrade the configuration to using module.rules.</p>
+<p>####<code>module.loaders</code> 更改为 <code>module.rules</code><br>　　旧版本的 loader 配置已经被更强大的 rules 取代，新的 rules 能够配置 loader 之外的更多选项。出于兼容考虑，旧的 <code>module.loaders</code> 语法仍然能被解析。然而，新的命名规范更易理解，推荐将配置文件更新为使用 <code>module.rules</code> 语法。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">  module: &#123;</div><div class="line">-   loaders: [</div><div class="line">+   rules: [</div><div class="line">      &#123;</div><div class="line">        test: /\.css$/,</div><div class="line">-       loaders: [</div><div class="line">+       use: [</div><div class="line">          &#123;</div><div class="line">            loader: &quot;style-loader&quot;</div><div class="line">          &#125;,</div><div class="line">          &#123;</div><div class="line">            loader: &quot;css-loader&quot;,</div><div class="line">-           query: &#123;</div><div class="line">+           options: &#123;</div><div class="line">              modules: true</div><div class="line">            &#125;</div><div class="line">        ]</div><div class="line">      &#125;</div><div class="line">    ]</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>####Automatic <code>-loader</code> module name extension removed<br>It is not possible anymore to omit the <code>-loader</code> extension when referencing loaders:</p>
+<p>####在模块名后自动补上 -loader 后缀的功能被移除<br>　　在引用 loader 时，再也不能省略 <code>-loader</code> 后缀：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">        loaders: [</div><div class="line">-           &quot;style&quot;,</div><div class="line">+           &quot;style-loader&quot;,</div><div class="line">-           &quot;css&quot;,</div><div class="line">+           &quot;css-loader&quot;,</div><div class="line">-           &quot;less&quot;,</div><div class="line">+           &quot;less-loader&quot;,</div><div class="line">        ]</div></pre></td></tr></table></figure></p>
+<p>You can still opt-in to the old behavior with the <code>resolveLoader.moduleExtensions</code> configuration option.<br>　　你可以通过添加 <code>resolveLoader.moduleExtensions</code> 配置项，继续使用以前的格式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">resolveLoader: &#123;</div><div class="line">  moduleExtensions: [&quot;-loader&quot;]</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>　　愉快的改好<code>webpack.config.js</code>，接下来开始曲折的趟坑之旅。</p>
+<p>##蹚坑</p>
+<hr>
+<p>　　满心欢喜的build一发。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">$ npm run build</div><div class="line"></div><div class="line">&gt; hdzx_v4_html@1.0.0 build /Users/j3l11234/Documents/nodejs/hdzx_v4_html</div><div class="line">&gt; gulp build</div><div class="line"></div><div class="line">[15:28:59] Using gulpfile ~/Documents/nodejs/hdzx_v4_html/gulpfile.js</div><div class="line">[15:28:59] Starting &apos;clean&apos;...</div><div class="line">[15:28:59] Finished &apos;clean&apos; after 21 ms</div><div class="line">[15:28:59] Starting &apos;build&apos;...</div><div class="line">[15:28:59] Starting &apos;style&apos;...</div><div class="line">[15:28:59] Finished &apos;style&apos; after 21 ms</div><div class="line">[15:28:59] Starting &apos;webpack&apos;...</div><div class="line">[15:28:59] Finished &apos;webpack&apos; after 297 ms</div><div class="line">[15:28:59] Finished &apos;build&apos; after 320 ms</div><div class="line">[15:29:01] Plumber found unhandled error:</div><div class="line"> Error in plugin &apos;webpack-stream&apos;</div><div class="line">Message:</div><div class="line">    ./src/js/approve/index.js</div><div class="line">Module parse failed: /Users/j3l11234/Documents/nodejs/hdzx_v4_html/src/js/approve/index.js Unexpected token (180:6)</div><div class="line">You may need an appropriate loader to handle this file type.</div><div class="line">SyntaxError: Unexpected token (180:6)</div><div class="line">    at Parser.pp$4.raise (/Users/j3l11234/Documents/nodejs/hdzx_v4_html/node_modules/.npminstall/acorn/3.3.0/acorn/dist/acorn.js:2221:15)</div><div class="line">    at Parser.pp.unexpected (/Users/j3l11234/Documents/nodejs/hdzx_v4_html/node_modules/.npminstall/acorn/3.3.0/acorn/dist/acorn.js:603:10)</div><div class="line">```  </div><div class="line">　　诶？这和剧本写的不一样啊？check一下配置文件：</div></pre></td></tr></table></figure></p>
+<p>  module: {<br>    rules: [<br>      {<br>        test: /.jsx?$/,<br>        loader: ‘babel-loader’,<br>        exclude: /node_modules/,<br>        options: {<br>          ‘presets’: [<br>            [‘es2015’, {modules: false}],<br>            ‘react’<br>          ]<br>        }<br>      }<br>    ]<br>  },<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　无肉眼可见的配置错误，不过提示**You may need an appropriate loader to handle this file type.**，也就是loader没有载入出来。经过几个世纪的测试，最后试了一条命令：</div></pre></td></tr></table></figure></p>
+<p>$ ./node_modules/webpack/bin/webpack.js<br>Hash: e2a6ffe6d35f21cf8167<br>Version: webpack 2.1.0-beta.27<br>Time: 3127ms<br>         Asset      Size  Chunks             Chunk Names<br>  order.js.map  85 bytes       0  [emitted]  order<br>      order.js   1.46 kB       0  [emitted]  order<br>      login.js   1.54 kB       2  [emitted]  login<br>       lock.js   1.82 kB       3  [emitted]  lock<br>      issue.js   1.51 kB       4  [emitted]  issue<br>    approve.js   1.09 kB       5  [emitted]  approve<br>     common.js    728 kB       6  [emitted]  common<br>    myorder.js   1.33 kB       1  [emitted]  myorder<br>myorder.js.map  87 bytes       1  [emitted]  myorder<br>  login.js.map  85 bytes       2  [emitted]  login<br>   lock.js.map  84 bytes       3  [emitted]  lock<br>  issue.js.map  85 bytes       4  [emitted]  issue<br>approve.js.map  87 bytes       5  [emitted]  approve<br> common.js.map    893 kB       6  [emitted]  common<br> [189] multi common 64 bytes {6} [built]</p>
+<pre><code>+ 189 hidden modules
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line">　　直接去调用 node_modules 里的 webpack 是成功的，使用 gulp 就不行，而 gulp 借助 webpack-stream 来实现 webpack 调用，莫非是 webpack-stream 的问题？翻出 webpack-stream 的 `package.json`：</div><div class="line">```json</div><div class="line">&#123;</div><div class="line">  &quot;name&quot;: &quot;webpack-stream&quot;,</div><div class="line">  &quot;version&quot;: &quot;3.2.0&quot;,</div><div class="line">  &quot;description&quot;: &quot;Run webpack as a stream&quot;,</div><div class="line">  &quot;license&quot;: &quot;MIT&quot;,</div><div class="line">  &quot;homepage&quot;: &quot;https://github.com/shama/webpack-stream&quot;,</div><div class="line">  &quot;repository&quot;: &quot;shama/webpack-stream&quot;,</div><div class="line">  &quot;author&quot;: &#123;</div><div class="line">    &quot;name&quot;: &quot;Kyle Robinson Young&quot;,</div><div class="line">    &quot;email&quot;: &quot;kyle@dontkry.com&quot;,</div><div class="line">    &quot;url&quot;: &quot;http://dontkry.com&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;engines&quot;: &#123;</div><div class="line">    &quot;node&quot;: &quot;&gt;= 0.10.0&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;scripts&quot;: &#123;</div><div class="line">    &quot;test&quot;: &quot;semistandard &amp;&amp; node test/test.js&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;files&quot;: [</div><div class="line">    &quot;index.js&quot;</div><div class="line">  ],</div><div class="line">  &quot;semistandard&quot;: &#123;</div><div class="line">    &quot;ignore&quot;: [</div><div class="line">      &quot;test/fixtures&quot;,</div><div class="line">      &quot;examples&quot;</div><div class="line">    ]</div><div class="line">  &#125;,</div><div class="line">  &quot;dependencies&quot;: &#123;</div><div class="line">    &quot;gulp-util&quot;: &quot;^3.0.7&quot;,</div><div class="line">    &quot;lodash.clone&quot;: &quot;^4.3.2&quot;,</div><div class="line">    &quot;lodash.some&quot;: &quot;^4.2.2&quot;,</div><div class="line">    &quot;memory-fs&quot;: &quot;^0.3.0&quot;,</div><div class="line">    &quot;through&quot;: &quot;^2.3.8&quot;,</div><div class="line">    &quot;vinyl&quot;: &quot;^1.1.0&quot;,</div><div class="line">    &quot;webpack&quot;: &quot;^1.12.9&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;devDependencies&quot;: &#123;</div><div class="line">    &quot;gulp&quot;: &quot;^3.9.0&quot;,</div><div class="line">    &quot;rimraf&quot;: &quot;^2.4.4&quot;,</div><div class="line">    &quot;semistandard&quot;: &quot;^7.0.4&quot;,</div><div class="line">    &quot;tape&quot;: &quot;^4.2.2&quot;,</div><div class="line">    &quot;vinyl-fs&quot;: &quot;^2.2.1&quot;,</div><div class="line">    &quot;vinyl-named&quot;: &quot;^1.1.0&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;keywords&quot;: [</div><div class="line">    &quot;gulpplugin&quot;,</div><div class="line">    &quot;webpack&quot;,</div><div class="line">    &quot;stream&quot;</div><div class="line">  ],</div><div class="line">  &quot;_from&quot;: &quot;webpack-stream@3.2.0&quot;,</div><div class="line">  &quot;_resolved&quot;: &quot;http://registry.npm.taobao.org/webpack-stream/download/webpack-stream-3.2.0.tgz&quot;</div><div class="line">&#125;</div><div class="line">```  </div><div class="line">　　OMG，webpack-stream 依赖的是 webpack^1.12.9 ，于是在使用 gulp 的时候，最终调用的还是 webpack^1.12.9，于是配置里的 rules 不被识别， loader 声明无效， build错误也就是完全可以理解的了。  </div><div class="line">　　老方法，看源码：</div><div class="line">```javascript</div><div class="line">module.exports = function (options, wp, done) &#123;</div><div class="line">  ...</div><div class="line"></div><div class="line">  var webpack = wp || require(&apos;webpack&apos;);</div><div class="line"></div><div class="line">  ...</div><div class="line">&#125;;</div><div class="line">```  </div><div class="line">　　看到闪闪发光的一行，webpack-stream 是可以注入 webpack 实例的，如果不注入，就使用 `require(&apos;webpack&apos;)` 引入 webpack-stream 自身所依赖的 webpack^1.12.9 。  </div><div class="line">　　怒改 `gulpfile.js`，在调用 webpack-stream 的时候手动传入 `require(&apos;webpack&apos;)` 。</div><div class="line">```javascript</div><div class="line">gulp.task(&apos;webpack-watch&apos;, function() &#123;</div><div class="line">  gulp.src(&apos;./src/js/**/*.js&apos;)</div><div class="line">    .pipe(plumber())</div><div class="line">    .pipe(webpack(Object.assign(require(&apos;./webpack.config.js&apos;),&#123;watch:true&#125;),require(&apos;webpack&apos;)))</div><div class="line">    .pipe(gulp.dest(DIST + &apos;/js&apos;));</div><div class="line">&#125;);</div><div class="line"></div><div class="line">gulp.task(&apos;webpack&apos;, function() &#123;</div><div class="line">  gulp.src(&apos;./src/js/**/*.js&apos;)</div><div class="line">    .pipe(plumber())</div><div class="line">    .pipe(webpack(require(&apos;./webpack.config.js&apos;),require(&apos;webpack&apos;)))</div><div class="line">    .pipe(gulp.dest(DIST + &apos;/js&apos;));</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>　　再 build 一把，一次OK：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">$ npm run build</div><div class="line"></div><div class="line">&gt; hdzx_v4_html@1.0.0 build /Users/j3l11234/Documents/nodejs/hdzx_v4_html</div><div class="line">&gt; gulp build</div><div class="line"></div><div class="line">[17:05:48] Using gulpfile ~/Documents/nodejs/hdzx_v4_html/gulpfile.js</div><div class="line">[17:05:48] Starting &apos;clean&apos;...</div><div class="line">[17:05:48] Finished &apos;clean&apos; after 6.6 ms</div><div class="line">[17:05:48] Starting &apos;build&apos;...</div><div class="line">[17:05:48] Starting &apos;style&apos;...</div><div class="line">[17:05:48] Finished &apos;style&apos; after 14 ms</div><div class="line">[17:05:48] Starting &apos;webpack&apos;...</div><div class="line">[17:05:48] Finished &apos;webpack&apos; after 348 ms</div><div class="line">[17:05:48] Finished &apos;build&apos; after 364 ms</div><div class="line">[17:06:00] Version: webpack 2.1.0-beta.27</div><div class="line">         Asset    Size  Chunks             Chunk Names</div><div class="line">  order.js.map  238 kB       0  [emitted]  order</div><div class="line">      order.js  230 kB       0  [emitted]  order</div><div class="line">    myorder.js  169 kB       2  [emitted]  myorder</div><div class="line">    approve.js  172 kB       3  [emitted]  approve</div><div class="line">      issue.js  145 kB       4  [emitted]  issue</div><div class="line">      login.js  101 kB       5  [emitted]  login</div><div class="line">     common.js  729 kB       6  [emitted]  common</div><div class="line">       lock.js  183 kB       1  [emitted]  lock</div><div class="line">   lock.js.map  195 kB       1  [emitted]  lock</div><div class="line">myorder.js.map  184 kB       2  [emitted]  myorder</div><div class="line">approve.js.map  190 kB       3  [emitted]  approve</div><div class="line">  issue.js.map  161 kB       4  [emitted]  issue</div><div class="line">  login.js.map  121 kB       5  [emitted]  login</div><div class="line"> common.js.map  894 kB       6  [emitted]  common</div></pre></td></tr></table></figure></p>
+<p>　　老哥，稳。</p>
+<p>##后记</p>
+<hr>
+<p>　　台上一分钟，台下十年功，博客写的6，其实找问题的时候真的想疯。然后，不看 github 真是太傻了，下次遇到问题一定要到全球最大的同性交友平台问问！<br><a href="https://github.com/shama/webpack-stream/issues/125" target="_blank" rel="external">https://github.com/shama/webpack-stream/issues/125</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.j3l11234.com/2016/11/25/update-webpack-1to2/" data-id="cizh2la72000n4jzxwfxtb21p" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/04/vue-note/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Vue 笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/23/yum-remove-with-exclude/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">在 yum remove 时保留特定依赖</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="update-webpack-1to2" data-title="Webpack 1 更新到 Webpack 2 的蹚坑记" data-url="http://blog.j3l11234.com/2016/11/25/update-webpack-1to2/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'j3l11234'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  </section>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">三月 2011</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/02/22/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/04/vue-note/">Vue 笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/25/update-webpack-1to2/">Webpack 1 更新到 Webpack 2 的蹚坑记</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/23/yum-remove-with-exclude/">在 yum remove 时保留特定依赖</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/09/hdzx_v4-launched/">学活新版本系统上线了</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 j3l11234<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      </br><script src="https://s22.cnzz.com/z_stat.php?id=1253355046&web_id=1253355046" language="JavaScript"></script>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
