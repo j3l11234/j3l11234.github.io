@@ -61,6 +61,74 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-ghost2hexo" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/24/ghost2hexo/" class="article-date">
+  <time datetime="2017-02-24T01:46:31.000Z" itemprop="datePublished">2017-02-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/24/ghost2hexo/">从ghost迁移到hexo</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>迁移的原因，大概是因为node的后端崩了懒得起，又或者是觉得Github Pages很cool，总之一时心血来潮就迁移过来了。<br>Hexo是一个博客框架，可以生成静态页面并托管到Github上，用户可以用Html，Markown来编写文章。不用Jekyll的原因啊是因为要捣鼓Ruby的gem，而Hexo是运行在Node.js上的，装起来比较省事。</p>
+<h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><p>身为一名前端开发，早已装好Git和Node.js了，如果没有其实Hexo的教程里都有步骤。<br><a href="https://hexo.io/docs/" target="_blank" rel="external">https://hexo.io/docs/</a></p>
+<p>首先是安装Hexo</p>
+<p>Mac下会有DTrace报错的问题，每次运行都会报错但是不影响使用。解决该问题，在安装hexo的时候加上 <code>--no-optional</code> 即可。<br><a href="https://hexo.io/docs/troubleshooting.html#Error-with-DTrace-Mac-OS-X" target="_blank" rel="external">https://hexo.io/docs/troubleshooting.html#Error-with-DTrace-Mac-OS-X</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">$ sudo npm install -g hexo-cli</div><div class="line">……</div><div class="line"></div><div class="line">$ hexo init blog</div><div class="line">INFO  Cloning hexo-starter to ~/Documents/nodejs/blog</div><div class="line">……</div><div class="line">INFO  Install dependencies</div><div class="line">……</div><div class="line">&gt; node install</div><div class="line">……</div><div class="line">INFO  Start blogging with Hexo!</div><div class="line"></div><div class="line">$ cd blog</div><div class="line">//解决Mac下DTrace错误，需要补刀</div><div class="line">$ npm install hexo  --no-optional</div><div class="line">……</div><div class="line"></div><div class="line">$ hexo</div><div class="line">Usage: hexo &lt;command&gt;</div><div class="line"></div><div class="line">Commands:</div><div class="line">  clean     Removed generated files and cache.</div><div class="line">  config    Get or set configurations.</div><div class="line">  deploy    Deploy your website.</div><div class="line">  generate  Generate static files.</div><div class="line">  help      Get help on a command.</div><div class="line">  init      Create a new Hexo folder.</div><div class="line">  list      List the information of the site</div><div class="line">  migrate   Migrate your site from other system to Hexo.</div><div class="line">  new       Create a new post.</div><div class="line">  publish   Moves a draft post from _drafts to _posts folder.</div><div class="line">  render    Render files with renderer plugins.</div><div class="line">  server    Start the server.</div><div class="line">  version   Display version information.</div><div class="line"></div><div class="line">Global Options:</div><div class="line">  --config  Specify config file instead of using _config.yml</div><div class="line">  --cwd     Specify the CWD</div><div class="line">  --debug   Display all verbose messages in the terminal</div><div class="line">  --draft   Display draft posts</div><div class="line">  --safe    Disable all plugins and scripts</div><div class="line">  --silent  Hide output on console</div><div class="line"></div><div class="line">For more help, you can use &apos;hexo help [command]&apos; for the detailed information</div><div class="line">or you can check the docs: http://hexo.io/docs/</div><div class="line"></div><div class="line">$ ls</div><div class="line">_config.yml package.json    source</div><div class="line">node_modules    scaffolds   themes</div></pre></td></tr></table></figure>
+<p>这样就生成了一个名为blog的目录，里面有以下文件</p>
+<h3 id="config-yml"><a href="#config-yml" class="headerlink" title="_config.yml"></a>_config.yml</h3><p>配置文件</p>
+<h3 id="package-json"><a href="#package-json" class="headerlink" title="package.json"></a>package.json</h3><p>项目描述文件</p>
+<h3 id="scaffolds"><a href="#scaffolds" class="headerlink" title="scaffolds"></a>scaffolds</h3><p>脚手架目录，里面是模板文件，要写一篇新文章的时候，会以scaffolds里的模板生成新文章。</p>
+<h3 id="source"><a href="#source" class="headerlink" title="source"></a>source</h3><p>源文件目录，<code>_posts</code>文件夹里放着文章，除此之外以<code>_</code>为前缀的文件夹都会被忽略。所有的页面最终会渲染在<code>public</code>目录下。</p>
+<h3 id="themes"><a href="#themes" class="headerlink" title="themes"></a>themes</h3><p>主题目录，渲染出静态页面的时候会把source里的页面（文章）套用这里的主题。</p>
+<h2 id="配置Hexo"><a href="#配置Hexo" class="headerlink" title="配置Hexo"></a>配置Hexo</h2><p>编辑<code>_config.yml</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"># Site</div><div class="line">title: JS工作室</div><div class="line">author: j3l11234</div><div class="line">language: zh-CN</div><div class="line">timezone: Asia/Shanghai</div><div class="line"></div><div class="line"># URL</div><div class="line">url: http://blog.j3l11234.com</div><div class="line">root: /</div><div class="line"></div><div class="line">#Writing</div><div class="line">new_post_name: :year-:month-:day-:title.md </div><div class="line"></div><div class="line"># Deployment</div><div class="line">deploy:</div><div class="line">  type: git</div><div class="line">  repo: https://github.com/j3l11234/j3l11234.github.io.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure>
+<p>new_post_name 是<code>source/_posts</code>里文章的命名格式，笔者习惯以日期作为前缀，这样好排序。<br>deploy里的repo根据实际情况填写，使用git做提交的话，需要额外安装一个包<br><code>npm install --save hexo-deployer-git</code></p>
+<h2 id="运行Hexo"><a href="#运行Hexo" class="headerlink" title="运行Hexo"></a>运行Hexo</h2><p>生成的项目里，已经有<code>source/_posts/hello-world.md</code>一篇文章作为示例了。这时可以运行看看效果。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div><div class="line">INFO  Start processing</div><div class="line">INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</div><div class="line"></div><div class="line">//其实运行 hexo s 就可以</div></pre></td></tr></table></figure></p>
+<p><a href="https://hexo.io/docs/server.html" target="_blank" rel="external">https://hexo.io/docs/server.html</a> 有详细的介绍，比如指定端口和ip什么的。</p>
+<p>这时候打开<a href="http://localhost:4000/" target="_blank" rel="external">http://localhost:4000/</a>就可以看到效果了。如果这时候修改<code>source</code>下的文件，直接刷新页面就可以看到修改。</p>
+<h2 id="创建新文章"><a href="#创建新文章" class="headerlink" title="创建新文章"></a>创建新文章</h2><p>直接创建一篇的新的文章。post可以省略，因为<code>_config.yml</code>里配置了<code>default_layout: post</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo new post test1</div><div class="line">INFO  Created: ~/Documents/nodejs/blog/source/_posts/2017-02-24-test1.md</div></pre></td></tr></table></figure></p>
+<p>也可以先创建草稿，编写完成后再publish。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ hexo new draft test2</div><div class="line">INFO  Created: ~/Documents/nodejs/blog/source/_drafts/test2.md</div><div class="line"></div><div class="line">$ hexo publish test2</div><div class="line">INFO  Published: ~/Documents/nodejs/blog/source/_posts/2017-02-24-test2.md</div></pre></td></tr></table></figure></p>
+<h2 id="从ghost迁移到hexo"><a href="#从ghost迁移到hexo" class="headerlink" title="从ghost迁移到hexo"></a>从ghost迁移到hexo</h2><h3 id="标准方法"><a href="#标准方法" class="headerlink" title="标准方法"></a>标准方法</h3><p>从ghost里导出得到<code>source.json</code>，放在blog目录下。</p>
+<p>修改 <code>scaffolds/post.md</code>文件，添加tag<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">title: &#123;&#123; title &#125;&#125;</div><div class="line">date: &#123;&#123; date &#125;&#125;</div><div class="line">tags: &#123;&#123; tags &#125;&#125; </div><div class="line">---</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-migrator-ghost</div><div class="line">hexo migrate ghost source.json</div></pre></td></tr></table></figure>
+<h3 id="旁门左道"><a href="#旁门左道" class="headerlink" title="旁门左道"></a>旁门左道</h3><p>当时手头只有一个<code>ghost.db</code>，也就是ghost的数据库，在懒得装ghost的情况下，手动去读取并生成文件。<br>各位看看就好，请勿模仿。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> sqlite3 = <span class="built_in">require</span>(<span class="string">'sqlite3'</span>);</div><div class="line">sqlite3.verbose();</div><div class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>); </div><div class="line"></div><div class="line"><span class="built_in">Date</span>.prototype.Format = <span class="function"><span class="keyword">function</span> (<span class="params">fmt</span>) </span>&#123; <span class="comment">//author: meizz </span></div><div class="line">    <span class="keyword">var</span> o = &#123;</div><div class="line">        <span class="string">"M+"</span>: <span class="keyword">this</span>.getMonth() + <span class="number">1</span>, <span class="comment">//月份 </span></div><div class="line">        <span class="string">"d+"</span>: <span class="keyword">this</span>.getDate(), <span class="comment">//日 </span></div><div class="line">        <span class="string">"h+"</span>: <span class="keyword">this</span>.getHours(), <span class="comment">//小时 </span></div><div class="line">        <span class="string">"m+"</span>: <span class="keyword">this</span>.getMinutes(), <span class="comment">//分 </span></div><div class="line">        <span class="string">"s+"</span>: <span class="keyword">this</span>.getSeconds(), <span class="comment">//秒 </span></div><div class="line">        <span class="string">"q+"</span>: <span class="built_in">Math</span>.floor((<span class="keyword">this</span>.getMonth() + <span class="number">3</span>) / <span class="number">3</span>), <span class="comment">//季度 </span></div><div class="line">        <span class="string">"S"</span>: <span class="keyword">this</span>.getMilliseconds() <span class="comment">//毫秒 </span></div><div class="line">    &#125;;</div><div class="line">    <span class="keyword">if</span> (<span class="regexp">/(y+)/</span>.test(fmt))</div><div class="line">        fmt = fmt.replace(<span class="built_in">RegExp</span>.$<span class="number">1</span>, (<span class="keyword">this</span>.getFullYear() + <span class="string">""</span>).substr(<span class="number">4</span> - <span class="built_in">RegExp</span>.$<span class="number">1.</span>length));</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> k <span class="keyword">in</span> o)</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"("</span> + k + <span class="string">")"</span>).test(fmt))</div><div class="line">            fmt = fmt.replace(<span class="built_in">RegExp</span>.$<span class="number">1</span>, (<span class="built_in">RegExp</span>.$<span class="number">1.</span>length == <span class="number">1</span>) ? (o[k]) : ((<span class="string">"00"</span> + o[k]).substr((<span class="string">""</span> + o[k]).length)));</div><div class="line">    <span class="keyword">return</span> fmt;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">item2File</span>(<span class="params">row</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> fileName = <span class="keyword">new</span> <span class="built_in">Date</span>(row.created_at).Format(<span class="string">"yyyy-MM-dd"</span>) + <span class="string">"-"</span> + row.slug  +<span class="string">".md"</span> ;</div><div class="line">  <span class="keyword">var</span> content = <span class="string">"\</span></div><div class="line">---\n\</div><div class="line">title: "+row.title+<span class="string">"\n\</span></div><div class="line">date: "+<span class="keyword">new</span> <span class="built_in">Date</span>(row.created_at).Format(<span class="string">"yyyy-MM-dd hh:mm:ss"</span>)+<span class="string">"\n\</span></div><div class="line">updated: "+<span class="keyword">new</span> <span class="built_in">Date</span>(row.updated_at).Format(<span class="string">"yyyy-MM-dd hh:mm:ss"</span>)+<span class="string">"\n\</span></div><div class="line">tags:\n\</div><div class="line">---\n"+row.markdown;</div><div class="line">  </div><div class="line">  <span class="comment">//console.log(content);</span></div><div class="line">  fs.appendFile(<span class="string">"./source/_posts/"</span>+fileName, content, <span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123;  </div><div class="line">    <span class="keyword">if</span>(err)  </div><div class="line">      <span class="built_in">console</span>.log(<span class="string">"fail "</span> + err);  </div><div class="line">    <span class="keyword">else</span></div><div class="line">      <span class="built_in">console</span>.log(fileName);</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">"created the post file"</span>);  </div><div class="line">  &#125;);  </div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">var</span> db = <span class="keyword">new</span> sqlite3.Database(<span class="string">"ghost.db"</span>, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,</div><div class="line">  <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (err) &#123;</div><div class="line">      <span class="built_in">console</span>.err(<span class="string">'FAIL on open database '</span> + err);</div><div class="line">      process.exit(<span class="number">-1</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line"></div><div class="line">db.each(<span class="string">"SELECT title,slug,markdown,created_at,updated_at,published_at FROM posts"</span>, [],<span class="function"><span class="keyword">function</span>(<span class="params">err, row</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (err) &#123;</div><div class="line">    <span class="built_in">console</span>.err(<span class="string">'FAIL on select database '</span> + err);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">//时间修正</span></div><div class="line">  <span class="keyword">if</span> (row.published_at &amp;&amp; row.created_at &gt; row.published_at)</div><div class="line">        row.created_at = row.published_at;</div><div class="line">  <span class="keyword">if</span> (row.published_at &amp;&amp; row.updated_at &gt; row.published_at)</div><div class="line">        row.updated_at = row.published_at;</div><div class="line"></div><div class="line">  item2File(row);  </div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>为了迎合Github Pages的自定义域名，我们新建<code>source/CNAME</code>，里面写上域名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">blog.j3l11234.com</div></pre></td></tr></table></figure></p>
+<p>这样在push到github之后就不需要在手动设置自定义域名了。如果你使用<code>xxxxx.giuhub.io</code>这样的原生域名，可以忽略该步骤。</p>
+<p>然后是生成页面并部署<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div><div class="line">INFO  Start processing</div><div class="line">INFO  Files loaded in 266 ms</div><div class="line">INFO  Generated: index.html</div><div class="line">……</div><div class="line">INFO  28 files generated in 1.05 s</div><div class="line">$ hexo deploy</div></pre></td></tr></table></figure></p>
+<h2 id="配置多说评论"><a href="#配置多说评论" class="headerlink" title="配置多说评论"></a>配置多说评论</h2><p>按照教程可以很简单的弄完。<br><a href="http://dev.duoshuo.com/threads/541d3b2b40b5abcd2e4df0e9" target="_blank" rel="external">http://dev.duoshuo.com/threads/541d3b2b40b5abcd2e4df0e9</a></p>
+<p>有一个小坑，<code>_config.yml</code>里边的<code>duoshuo_shortname:</code>，指的是你在多说的域名，比如我的是<code>j3l11234.duoshuo.com</code> ，那么就应该这么填<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#DuoShuo</div><div class="line">duoshuo_shortname: j3l11234</div></pre></td></tr></table></figure></p>
+<p>我建议将<code>data-thread-key=&quot;&lt;%= post.layout %&gt;-&lt;%= post.slug %&gt;&quot;</code>改为<code>data-thread-key=&quot;&lt;%= post.slug %&gt;&quot;</code>，把slug作为多说文章的key，这样从ghost迁移之后，原来文章的评论也可以一起同步过来。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- 多说评论框 start --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"ds-thread"</span> <span class="attr">data-thread-key</span>=<span class="string">"&lt;%= post.layout %&gt;-&lt;%= post.slug %&gt;"</span> <span class="attr">data-title</span>=<span class="string">"&lt;%= post.title %&gt;"</span> <span class="attr">data-url</span>=<span class="string">"&lt;%= page.permalink %&gt;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- 多说评论框 end --&gt;</span></div></pre></td></tr></table></figure></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Hexo用起来还是很畅快淋漓的，渲染出静态页面之后，爱放哪放哪。感觉很Geek，很符合『轻博客』的原则。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.j3l11234.com/2017/02/24/ghost2hexo/" data-id="cizja3zxh000im9zxzeknhni1" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
+  
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/02/22/hello-world/" class="article-date">
@@ -96,7 +164,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2017/02/22/hello-world/" data-id="cizhrahj9000k4rh9a57kw1py" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2017/02/22/hello-world/" data-id="cizja3zxj000lm9zxeuhejkwe" class="article-share-link">Share</a>
       
       
     </footer>
@@ -137,7 +205,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/12/04/vue-note/" data-id="cizhrahj7000h4rh9bwxd71dj" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/12/04/vue-note/" data-id="cizja3zxi000jm9zxofjtkq29" class="article-share-link">Share</a>
       
       
     </footer>
@@ -210,7 +278,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/11/25/update-webpack-1to2/" data-id="cizhrahj8000i4rh9gqdyn6gb" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/11/25/update-webpack-1to2/" data-id="cizja3zxj000km9zxunv5td3c" class="article-share-link">Share</a>
       
       
     </footer>
@@ -251,8 +319,7 @@
 <p>首先祭出<code>yum remove</code>大法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"># yum remove perl-*</div><div class="line"></div><div class="line">[...]</div><div class="line"></div><div class="line">Dependencies Resolved</div><div class="line"></div><div class="line">================================================================================</div><div class="line"> Package                       Arch   Version              Repository      Size</div><div class="line">================================================================================</div><div class="line">Removing:</div><div class="line"> perl                          x86_64 4:5.16.3-283.el7     @anaconda       22 M</div><div class="line"> perl-Carp                     noarch 1.26-244.el7         @anaconda       28 k</div><div class="line"> perl-Compress-Raw-Bzip2       x86_64 2.061-3.el7          @anaconda       57 k</div><div class="line"> perl-Compress-Raw-Zlib        x86_64 1:2.061-4.el7        @anaconda      137 k</div><div class="line"> perl-DBI                      x86_64 1.627-4.el7          @anaconda      1.9 M</div><div class="line"> perl-Data-Dumper              x86_64 2.145-3.el7          @anaconda       97 k</div><div class="line"> perl-Encode                   x86_64 2.51-7.el7           @anaconda      9.7 M</div><div class="line"> perl-Error                    noarch 1:0.17020-2.el7      @anaconda       49 k</div><div class="line"> perl-Exporter                 noarch 5.68-3.el7           @anaconda       55 k</div><div class="line"> perl-File-Path                noarch 2.09-2.el7           @anaconda       49 k</div><div class="line"> perl-File-Temp                noarch 0.23.01-3.el7        @anaconda      155 k</div><div class="line"> perl-Filter                   x86_64 1.49-3.el7           @anaconda      145 k</div><div class="line"> perl-Getopt-Long              noarch 2.40-2.el7           @anaconda      132 k</div><div class="line"> perl-Git                      noarch 2.10.0-1.gf.el7      @/perl-Git-2.10.0-1.gf.el7.noarch</div><div class="line">                                                                           61 k</div><div class="line"> perl-HTTP-Tiny                noarch 0.033-3.el7          @anaconda       95 k</div><div class="line"> perl-IO-Compress              noarch 2.061-2.el7          @anaconda      795 k</div><div class="line"> perl-Net-Daemon               noarch 0.48-5.el7           @anaconda      116 k</div><div class="line"> perl-PathTools                x86_64 3.40-5.el7           @anaconda      170 k</div><div class="line"> perl-PlRPC                    noarch 0.2020-14.el7        @anaconda       69 k</div><div class="line"> perl-Pod-Escapes              noarch 1:1.04-283.el7       @anaconda       21 k</div><div class="line"> perl-Pod-Perldoc              noarch 3.20-4.el7           @anaconda      163 k</div><div class="line"> perl-Pod-Simple               noarch 1:3.28-4.el7         @anaconda      526 k</div><div class="line"> perl-Pod-Usage                noarch 1.63-3.el7           @anaconda       44 k</div><div class="line"> perl-Scalar-List-Utils        x86_64 1.27-248.el7         @anaconda       66 k</div><div class="line"> perl-Socket                   x86_64 2.010-3.el7          @anaconda      112 k</div><div class="line"> perl-Storable                 x86_64 2.45-3.el7           @anaconda      177 k</div><div class="line"> perl-TermReadKey              x86_64 2.30-20.el7          @anaconda       59 k</div><div class="line"> perl-Text-ParseWords          noarch 3.29-4.el7           @anaconda       16 k</div><div class="line"> perl-Time-Local               noarch 1.2300-2.el7         @anaconda       43 k</div><div class="line"> perl-constant                 noarch 1.27-2.el7           @anaconda       26 k</div><div class="line"> perl-libs                     x86_64 4:5.16.3-283.el7     @anaconda      1.6 M</div><div class="line"> perl-macros                   x86_64 4:5.16.3-283.el7     @anaconda      5.0 k</div><div class="line"> perl-parent                   noarch 1:0.225-244.el7      @anaconda      8.0 k</div><div class="line"> perl-podlators                noarch 2.5.1-3.el7          @anaconda      281 k</div><div class="line"> perl-threads                  x86_64 1.87-4.el7           @anaconda       96 k</div><div class="line"> perl-threads-shared           x86_64 1.43-6.el7           @anaconda       72 k</div><div class="line">Removing for dependencies:</div><div class="line"> MariaDB-client                x86_64 10.1.18-1.el7.centos @/MariaDB-10.1.18-centos7-x86_64-client</div><div class="line">                                                                          170 M</div><div class="line"> MariaDB-server                x86_64 10.1.18-1.el7.centos @/MariaDB-10.1.18-centos7-x86_64-server</div><div class="line">                                                                          428 M</div><div class="line"> git                           x86_64 2.10.0-1.gf.el7      @/git-2.10.0-1.gf.el7.x86_64</div><div class="line">                                                                          2.4 M</div><div class="line"></div><div class="line">[...]</div><div class="line"></div><div class="line">Transaction Summary</div><div class="line">================================================================================</div><div class="line">Remove  36 Packages (+35 Dependent packages)</div><div class="line"></div><div class="line">Installed size: 793 M</div><div class="line">Is this ok [y/N]</div></pre></td></tr></table></figure></p>
 <p>　　列出了好多东西，看得笔者心花怒放，但是，诶？？？怎么<em>MariaDB</em>和<em>git</em>也要被一起删掉呢，仔细一看：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"># yum deplist Mariadb</div><div class="line"></div><div class="line">Loaded plugins: fastestmirror, langpacks</div><div class="line">Loading mirror speeds from cached hostfile</div><div class="line"> * base: mirrors.tuna.tsinghua.edu.cn</div><div class="line"> * extras: mirrors.tuna.tsinghua.edu.cn</div><div class="line"> * updates: mirrors.tuna.tsinghua.edu.cn</div><div class="line">package: mariadb.x86_64 1:5.5.50-1.el7_2</div><div class="line"></div><div class="line">[...]</div><div class="line"></div><div class="line">  dependency: mariadb-libs(x86-64) = 1:5.5.50-1.el7_2</div><div class="line">   provider: mariadb-libs.x86_64 1:5.5.50-1.el7_2</div><div class="line">  dependency: perl(Exporter)</div><div class="line">   provider: perl-Exporter.noarch 5.68-3.el7</div><div class="line">  dependency: perl(Fcntl)</div><div class="line">   provider: perl.x86_64 4:5.16.3-286.el7</div><div class="line">  dependency: perl(File::Temp)</div><div class="line">   provider: perl-File-Temp.noarch 0.23.01-3.el7</div><div class="line">  dependency: perl(Getopt::Long)</div><div class="line">   provider: perl-Getopt-Long.noarch 2.40-2.el7</div><div class="line">  dependency: perl(IPC::Open3)</div><div class="line">   provider: perl.x86_64 4:5.16.3-286.el7</div><div class="line">  dependency: perl(Sys::Hostname)</div><div class="line">   provider: perl.x86_64 4:5.16.3-286.el7</div></pre></td></tr></table></figure></p>
 <p>　　原因找到了，因为MariaDB依赖了perl的某些组件，<em>perl-*</em>粗暴的把这些被依赖的组件包括在里面了，这该怎么办呢？</p>
-<h2 id="弯路"><a href="#弯路" class="headerlink" title="弯路"></a>弯路</h2><hr>
-<p>想了几个解决方案：</p>
+<h2 id="弯路"><a href="#弯路" class="headerlink" title="弯路"></a>弯路</h2><p>想了几个解决方案：</p>
 <ul>
 <li><p><strong>先一起删除，再重新安装</strong><br>　　这个方法总有点向黑恶势力低头的感觉，最关键是的是，MariaDB是<u>跑着服务</u>的。否决。</p>
 
@@ -262,12 +329,9 @@
 <li><p><strong>修改yum</strong><br>　　笔者一怒之下去 <a href="yum.baseurl.org">yum.baseurl.org</a> 扒了源码下来，在<code>__init__.py</code>里的<code>remove()</code>看了半天，找不到足够优雅的切入点去改，于是放弃。。。</p>
 </li>
 </ul>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><hr>
-<p>　　就思路本身而言，其实很简单，举个栗子，需要删除foo-a、foo-b、foo-c三个软件包，但是需要保留bar-a，而bar-a依赖于bar-b，bar-b依赖于foo-b。  </p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>　　就思路本身而言，其实很简单，举个栗子，需要删除foo-a、foo-b、foo-c三个软件包，但是需要保留bar-a，而bar-a依赖于bar-b，bar-b依赖于foo-b。  </p>
 <p>匹配foo-*匹配，得到：<br><code>A = [foo-a, foo-b, foo-c]</code><br>计算bar-a的依赖，得到：<br><code>B = [bar-a, bar-b, foo-b]</code><br>取其差集：<br><code>C = A - B = [foo-a, foo-c]</code><br>卸载C，是不会影响到bar-a的。</p>
-<p>##技术点</p>
-<hr>
-<p>####RepoQuery<br>官网介绍：<a href="http://yum.baseurl.org/wiki/RepoQuery" target="_blank" rel="external">http://yum.baseurl.org/wiki/RepoQuery</a></p>
+<h2 id="技术点"><a href="#技术点" class="headerlink" title="技术点"></a>技术点</h2><h4 id="RepoQuery"><a href="#RepoQuery" class="headerlink" title="RepoQuery"></a>RepoQuery</h4><p>官网介绍：<a href="http://yum.baseurl.org/wiki/RepoQuery" target="_blank" rel="external">http://yum.baseurl.org/wiki/RepoQuery</a></p>
 <blockquote>
 <p>Repoquery is a yum-util that has an array of involved and complicated options. It is intended to be an analog to rpm -q commands but run on remote repositories. This accounts for why it is complicated and involved :)</p>
 <p>Repoquery是一个包含高级选项的yum-util，它类似于rpm -q命令，但是涉及远程仓库，这也是它更复杂的原因 :)</p>
@@ -280,9 +344,7 @@
 <li><em>–pkgnarrow=installed</em> 只查找已安装的包</li>
 <li><em>–recursive</em> 递归查找依赖</li>
 </ul>
-<p>##实现</p>
-<hr>
-<p>　　笔者决定用最不擅长的一次就没写过的Python来解决问题，于是，在寒冷的冬夜里，在公司默默加班奋斗，一边查资料一边写脚本。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>　　笔者决定用最不擅长的一次就没写过的Python来解决问题，于是，在寒冷的冬夜里，在公司默默加班奋斗，一边查资料一边写脚本。</p>
 <blockquote>
 <p>Talk is cheap. Show me the code.</p>
 </blockquote>
@@ -292,7 +354,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/11/23/yum-remove-with-exclude/" data-id="cizhrahj9000j4rh9ccs16qux" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/11/23/yum-remove-with-exclude/" data-id="cizja3zxh000hm9zxn71m44i2" class="article-share-link">Share</a>
       
       
     </footer>
@@ -405,7 +467,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/10/09/hdzx_v4-launched/" data-id="cizhrahj5000g4rh9p9m6xc3a" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/10/09/hdzx_v4-launched/" data-id="cizja3zxf000fm9zxm6b1z94v" class="article-share-link">Share</a>
       
       
     </footer>
@@ -444,7 +506,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/09/19/selinux-nginx/" data-id="cizhrahj4000f4rh9g2dvrhfu" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/09/19/selinux-nginx/" data-id="cizja3zxg000gm9zxqkig4x58" class="article-share-link">Share</a>
       
       
     </footer>
@@ -483,7 +545,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/09/19/nginx-url-prefix-vhost/" data-id="cizhrahj3000e4rh99n9k5tmg" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/09/19/nginx-url-prefix-vhost/" data-id="cizja3zxd000em9zxuuuwlugd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -523,7 +585,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/09/13/wordpress2ghost/" data-id="cizhrahj1000c4rh9yr34jgg8" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/09/13/wordpress2ghost/" data-id="cizja3zxc000dm9zxix4ausl4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -564,83 +626,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/09/12/centos-hyper-video/" data-id="cizhrahj2000d4rh9p0ofv6pn" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-  
-    <article id="post-centos-fail2ban" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/09/21/centos-fail2ban/" class="article-date">
-  <time datetime="2015-09-20T18:34:16.000Z" itemprop="datePublished">2015-09-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/21/centos-fail2ban/">CentOS下fail2ban安装与配置教程</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>fail2ban用于监视系统日志，通过正则表达式匹配错误错误信息，设置一定的条件触发相应的屏蔽动作。<br> 在笔者的vps里，主要是用于ssh的保护，ssh登录错误的时候会记录到 <strong>/var/log/secure</strong>，fail2ban通过 gamin检测到新增日志，10min内同一ip连续登陆5次就会封禁30min。<br> 当然，一个足够的强密码也是必须的！</p>
-<p>官方主页：<a href="http://www.fail2ban.org/wiki/index.php/Main_Page" target="_blank" rel="external">http://www.fail2ban.org/wiki/index.php/Main_Page</a></p>
-<p>github：<a href="https://github.com/fail2ban/fail2ban" target="_blank" rel="external">https://github.com/fail2ban/fail2ban</a></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p> 这里有两种安装方式，使用yum安装或者通过rpm安装。笔者的系统版本是CentOS-6.7</p>
-<ul>
-<li>yum安装</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#首先安装epel源，如果已经安装可以跳过此步</div><div class="line">yum install -y epel-release</div><div class="line"></div><div class="line">#然后安装fail2ban：</div><div class="line">yum install -y fail2ban</div></pre></td></tr></table></figure>
-<ul>
-<li>rpm安装</li>
-</ul>
-<p>fail2ban依赖下面四个安装包：<br><strong>ed</strong>： Linux 操作系统下最简单的文本编辑器，以行为单位对文件进行编辑<br><strong>gamin-python</strong>： python调用gamin的一个模块，gamin实现了一套监控文件变化的机制<br><strong>ipset</strong>： 管理 ip地址/端口/mac地址 的模块，一般用于辅助提高iptables的性能<br><strong>python-inotify</strong>： python的一个模块，实现了文件变化通知机制</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">#其中前三个都可以使用yum安装：</div><div class="line">yum -y install ed gamin-python ipset python-inotify</div><div class="line"></div><div class="line">#然后根据系统架构不同，使用不同的rpm包安装：</div><div class="line">#i386</div><div class="line">rpm -Uvh ftp://rpmfind.net/linux/atrpms/el6-i386/atrpms/stable/python-inotify-0.9.1-1.1.el6.noarch.rpm</div><div class="line">rpm -Uvh ftp://rpmfind.net/linux/epel/testing/6/i386/fail2ban-0.9.3-1.el6.noarch.rpm</div><div class="line"></div><div class="line">#x86-64</div><div class="line">rpm -Uvh ftp://rpmfind.net/linux/atrpms/el6-x86_64/atrpms/stable/python-inotify-0.9.1-1.1.el6.noarch.rpm</div><div class="line">rpm -Uvh ftp://rpmfind.net/linux/epel/testing/6/x86_64/fail2ban-0.9.3-1.el6.noarch.rpm</div></pre></td></tr></table></figure>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>目前的最新版本是0.9.3</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">配置文件位于：</div><div class="line">/etc/fail2ban/action.d/ //采取相对应措施的目录</div><div class="line">/etc/fail2ban/fail2ban.conf //fail2ban的配置文件</div><div class="line">/etc/fail2ban/fail2ban.d/ //fail2ban的配置文件目录</div><div class="line">/etc/fail2ban/filter.d/ //具体过滤规则文件目录</div><div class="line">/etc/fail2ban/jail.conf //阻挡设定文件</div><div class="line">/etc/fail2ban/jail.d/ //阻挡设定文件的目录</div><div class="line">/etc/fail2ban/paths-*.conf //不同linux发行版下路径的相关设置，在jail.conf的[INCLUDES]里指定</div></pre></td></tr></table></figure>
-<p><strong>fail2ban.conf</strong> 是针对fail2ban程序运行本身的一些设置。<br><strong>jail.conf</strong> 是fail2ban的业务功能设置，里面设置了需要监控那些服务以及如何保护等，里边已经针对常用的服务提供了监控方案，比如sshd、apache、3proxy等，笔者只启用了sshd的保护。</p>
-<p>jail.conf里的注释十分丰富，简单介绍一些基本的设置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">#所有监控项的默认设置</div><div class="line">[DEFAULT]</div><div class="line">#忽略的ip，这里表示本机ip将永不被封禁</div><div class="line">ignoreip = 127.0.0.1/8</div><div class="line">#封禁时间，单位为秒</div><div class="line">bantime = 600</div><div class="line"></div><div class="line">#监控周期，表示在600s内，失败次数达到maxretry的主机将会被封禁</div><div class="line">findtime = 600</div><div class="line"></div><div class="line">#最大重试次数，表示在findtime内，失败次数达到5次的主机将会被封禁</div><div class="line">maxretry = 5</div><div class="line"></div><div class="line">#默认关闭对所有服务的保护</div><div class="line">enabled = false</div></pre></td></tr></table></figure>
-<p>启用sshd的保护很简单，在jail.conf的[sshd]中加上一行<strong>enabled = true</strong>就可以：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># SSH servers</div><div class="line">#</div><div class="line"></div><div class="line">[sshd]</div><div class="line"></div><div class="line">port = ssh</div><div class="line">logpath = %(sshd_log)s</div><div class="line">enabled = true</div></pre></td></tr></table></figure>
-<p>最后就是设置服务自启动了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chkconfig fail2ban on</div><div class="line">service fail2ban start</div></pre></td></tr></table></figure>
-<h2 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h2><p>Q：日志中出现<strong>Error starting action</strong>错误</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">fail2ban.server[2228]: INFO Jail sshd is not a JournalFilter instance</div><div class="line">fail2ban.jail[2228]: INFO Jail &apos;sshd&apos; started</div><div class="line">fail2ban.action[2228]: ERROR iptables -w -N f2b-sshd#012iptables -w -A f2b-sshd -j RETURN#012iptables -w -I INPUT -p tcp -m multiport --dports ssh -j f2b-sshd -- stdout: &apos;&apos;</div><div class="line">fail2ban.action[2228]: ERROR iptables -w -N f2b-sshd#012iptables -w -A f2b-sshd -j RETURN#012iptables -w -I INPUT -p tcp -m multiport --dports ssh -j f2b-sshd -- stderr: &apos;&apos;</div><div class="line">fail2ban.action[2228]: ERROR iptables -w -N f2b-sshd#012iptables -w -A f2b-sshd -j RETURN#012iptables -w -I INPUT -p tcp -m multiport --dports ssh -j f2b-sshd -- returned 2</div><div class="line">fail2ban.actions[2228]: ERROR Failed to start jail &apos;sshd&apos; action &apos;iptables-multiport&apos;: Error starting action</div></pre></td></tr></table></figure>
-<p>A：fail2ban-0.9.3在执行iptable命令时，加上了-w参数用于防止冲突，但是iptables-1.4.20才有这个参数，而CentOS6.7下的是iptables-1.4.7,因此导致iptable的命令执行失败，Github有这个问题：<br><a href="https://github.com/fail2ban/fail2ban/issues/1122" target="_blank" rel="external">https://github.com/fail2ban/fail2ban/issues/1122</a></p>
-<p>一个折中方案是，修改/etc/fail2ban/action.d/iptables-common.conf文件，去掉<strong><lockingopt></lockingopt></strong>，也就是-w参数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># Option: iptables</div><div class="line"># Notes.: Actual command to be executed, including common to all calls options</div><div class="line"># Values: STRING</div><div class="line">#iptables = iptables &lt;lockingopt&gt;</div><div class="line">iptables = iptables</div></pre></td></tr></table></figure>
-<p>Q：日志中出现<strong>ERROR findFailure failed to parse timeText</strong>错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Sep 21 09:57:51 12345 fail2ban.filter[1588]: ERROR findFailure failed to parse timeText: Sep 21 09:57:26 1234</div><div class="line"></div><div class="line">#在fail2ban-0.9.2 是这样的错误</div><div class="line">Sep 21 10:05:37 12345 fail2ban.filterpyinotify[1305]: ERROR Error in FilterPyinotify callback: mktime argument out of range</div></pre></td></tr></table></figure>
-<p>A：这个错误源于一个不算bug的bug，当用户的hostname前面为数字的时候就会触发</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@12345 ~]# hostname</div><div class="line">12345.domain.com</div></pre></td></tr></table></figure>
-<p>在日志中，<strong>12345.domain.com</strong>前面的<strong>12345</strong>被当作是年份被解析了，笔者的vps很不幸，hostname就是数字开头的，而且当时的版本还是fail2ban-0.9.2，排错过程十分辛苦。<br> 解决的方法有很多，比如最直接的修改hostname</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysconfig/network</div></pre></td></tr></table></figure>
-<p>而笔者采用的方案是修改 rsyslog 的日志格式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">vi /etc/rsyslog.conf</div><div class="line"></div><div class="line"># Use default timestamp format</div><div class="line">#$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat</div><div class="line">$template FileFormat,&quot;%TIMESTAMP:::date-rfc3339% %HOSTNAME% %syslogtag%%msg:::sp-if-no-1st-sp%%msg:::drop-last-lf%\n&quot;</div><div class="line">$ActionFileDefaultTemplate FileFormat</div></pre></td></tr></table></figure>
-<p>重启 rsyslog 服务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service rsyslog restart</div></pre></td></tr></table></figure>
-<p>关于rsyslog日志格式的说明：<br><a href="http://www.rsyslog.com/doc/v8-stable/configuration/templates.html#reserved-template-names" target="_blank" rel="external">http://www.rsyslog.com/doc/v8-stable/configuration/templates.html#reserved-template-names</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2015/09/21/centos-fail2ban/" data-id="cizhrahj0000b4rh9c26jr3tf" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/09/12/centos-hyper-video/" data-id="cizja3zxb000cm9zxtfqxlqjd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -686,6 +672,10 @@
       <ul>
         
           <li>
+            <a href="/2017/02/24/ghost2hexo/">从ghost迁移到hexo</a>
+          </li>
+        
+          <li>
             <a href="/2017/02/22/hello-world/">Hello World</a>
           </li>
         
@@ -699,10 +689,6 @@
         
           <li>
             <a href="/2016/11/23/yum-remove-with-exclude/">在 yum remove 时保留特定依赖</a>
-          </li>
-        
-          <li>
-            <a href="/2016/10/09/hdzx_v4-launched/">学活新版本系统上线了</a>
           </li>
         
       </ul>
