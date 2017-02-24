@@ -61,82 +61,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-centos-fail2ban" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/09/21/centos-fail2ban/" class="article-date">
-  <time datetime="2015-09-20T18:34:16.000Z" itemprop="datePublished">2015-09-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/21/centos-fail2ban/">CentOS下fail2ban安装与配置教程</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>fail2ban用于监视系统日志，通过正则表达式匹配错误错误信息，设置一定的条件触发相应的屏蔽动作。<br> 在笔者的vps里，主要是用于ssh的保护，ssh登录错误的时候会记录到 <strong>/var/log/secure</strong>，fail2ban通过 gamin检测到新增日志，10min内同一ip连续登陆5次就会封禁30min。<br> 当然，一个足够的强密码也是必须的！</p>
-<p>官方主页：<a href="http://www.fail2ban.org/wiki/index.php/Main_Page" target="_blank" rel="external">http://www.fail2ban.org/wiki/index.php/Main_Page</a></p>
-<p>github：<a href="https://github.com/fail2ban/fail2ban" target="_blank" rel="external">https://github.com/fail2ban/fail2ban</a></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p> 这里有两种安装方式，使用yum安装或者通过rpm安装。笔者的系统版本是CentOS-6.7</p>
-<ul>
-<li>yum安装</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#首先安装epel源，如果已经安装可以跳过此步</div><div class="line">yum install -y epel-release</div><div class="line"></div><div class="line">#然后安装fail2ban：</div><div class="line">yum install -y fail2ban</div></pre></td></tr></table></figure>
-<ul>
-<li>rpm安装</li>
-</ul>
-<p>fail2ban依赖下面四个安装包：<br><strong>ed</strong>： Linux 操作系统下最简单的文本编辑器，以行为单位对文件进行编辑<br><strong>gamin-python</strong>： python调用gamin的一个模块，gamin实现了一套监控文件变化的机制<br><strong>ipset</strong>： 管理 ip地址/端口/mac地址 的模块，一般用于辅助提高iptables的性能<br><strong>python-inotify</strong>： python的一个模块，实现了文件变化通知机制</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">#其中前三个都可以使用yum安装：</div><div class="line">yum -y install ed gamin-python ipset python-inotify</div><div class="line"></div><div class="line">#然后根据系统架构不同，使用不同的rpm包安装：</div><div class="line">#i386</div><div class="line">rpm -Uvh ftp://rpmfind.net/linux/atrpms/el6-i386/atrpms/stable/python-inotify-0.9.1-1.1.el6.noarch.rpm</div><div class="line">rpm -Uvh ftp://rpmfind.net/linux/epel/testing/6/i386/fail2ban-0.9.3-1.el6.noarch.rpm</div><div class="line"></div><div class="line">#x86-64</div><div class="line">rpm -Uvh ftp://rpmfind.net/linux/atrpms/el6-x86_64/atrpms/stable/python-inotify-0.9.1-1.1.el6.noarch.rpm</div><div class="line">rpm -Uvh ftp://rpmfind.net/linux/epel/testing/6/x86_64/fail2ban-0.9.3-1.el6.noarch.rpm</div></pre></td></tr></table></figure>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>目前的最新版本是0.9.3</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">配置文件位于：</div><div class="line">/etc/fail2ban/action.d/ //采取相对应措施的目录</div><div class="line">/etc/fail2ban/fail2ban.conf //fail2ban的配置文件</div><div class="line">/etc/fail2ban/fail2ban.d/ //fail2ban的配置文件目录</div><div class="line">/etc/fail2ban/filter.d/ //具体过滤规则文件目录</div><div class="line">/etc/fail2ban/jail.conf //阻挡设定文件</div><div class="line">/etc/fail2ban/jail.d/ //阻挡设定文件的目录</div><div class="line">/etc/fail2ban/paths-*.conf //不同linux发行版下路径的相关设置，在jail.conf的[INCLUDES]里指定</div></pre></td></tr></table></figure>
-<p><strong>fail2ban.conf</strong> 是针对fail2ban程序运行本身的一些设置。<br><strong>jail.conf</strong> 是fail2ban的业务功能设置，里面设置了需要监控那些服务以及如何保护等，里边已经针对常用的服务提供了监控方案，比如sshd、apache、3proxy等，笔者只启用了sshd的保护。</p>
-<p>jail.conf里的注释十分丰富，简单介绍一些基本的设置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">#所有监控项的默认设置</div><div class="line">[DEFAULT]</div><div class="line">#忽略的ip，这里表示本机ip将永不被封禁</div><div class="line">ignoreip = 127.0.0.1/8</div><div class="line">#封禁时间，单位为秒</div><div class="line">bantime = 600</div><div class="line"></div><div class="line">#监控周期，表示在600s内，失败次数达到maxretry的主机将会被封禁</div><div class="line">findtime = 600</div><div class="line"></div><div class="line">#最大重试次数，表示在findtime内，失败次数达到5次的主机将会被封禁</div><div class="line">maxretry = 5</div><div class="line"></div><div class="line">#默认关闭对所有服务的保护</div><div class="line">enabled = false</div></pre></td></tr></table></figure>
-<p>启用sshd的保护很简单，在jail.conf的[sshd]中加上一行<strong>enabled = true</strong>就可以：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># SSH servers</div><div class="line">#</div><div class="line"></div><div class="line">[sshd]</div><div class="line"></div><div class="line">port = ssh</div><div class="line">logpath = %(sshd_log)s</div><div class="line">enabled = true</div></pre></td></tr></table></figure>
-<p>最后就是设置服务自启动了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chkconfig fail2ban on</div><div class="line">service fail2ban start</div></pre></td></tr></table></figure>
-<h2 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h2><p>Q：日志中出现<strong>Error starting action</strong>错误</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">fail2ban.server[2228]: INFO Jail sshd is not a JournalFilter instance</div><div class="line">fail2ban.jail[2228]: INFO Jail &apos;sshd&apos; started</div><div class="line">fail2ban.action[2228]: ERROR iptables -w -N f2b-sshd#012iptables -w -A f2b-sshd -j RETURN#012iptables -w -I INPUT -p tcp -m multiport --dports ssh -j f2b-sshd -- stdout: &apos;&apos;</div><div class="line">fail2ban.action[2228]: ERROR iptables -w -N f2b-sshd#012iptables -w -A f2b-sshd -j RETURN#012iptables -w -I INPUT -p tcp -m multiport --dports ssh -j f2b-sshd -- stderr: &apos;&apos;</div><div class="line">fail2ban.action[2228]: ERROR iptables -w -N f2b-sshd#012iptables -w -A f2b-sshd -j RETURN#012iptables -w -I INPUT -p tcp -m multiport --dports ssh -j f2b-sshd -- returned 2</div><div class="line">fail2ban.actions[2228]: ERROR Failed to start jail &apos;sshd&apos; action &apos;iptables-multiport&apos;: Error starting action</div></pre></td></tr></table></figure>
-<p>A：fail2ban-0.9.3在执行iptable命令时，加上了-w参数用于防止冲突，但是iptables-1.4.20才有这个参数，而CentOS6.7下的是iptables-1.4.7,因此导致iptable的命令执行失败，Github有这个问题：<br><a href="https://github.com/fail2ban/fail2ban/issues/1122" target="_blank" rel="external">https://github.com/fail2ban/fail2ban/issues/1122</a></p>
-<p>一个折中方案是，修改/etc/fail2ban/action.d/iptables-common.conf文件，去掉<strong><lockingopt></lockingopt></strong>，也就是-w参数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># Option: iptables</div><div class="line"># Notes.: Actual command to be executed, including common to all calls options</div><div class="line"># Values: STRING</div><div class="line">#iptables = iptables &lt;lockingopt&gt;</div><div class="line">iptables = iptables</div></pre></td></tr></table></figure>
-<p>Q：日志中出现<strong>ERROR findFailure failed to parse timeText</strong>错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Sep 21 09:57:51 12345 fail2ban.filter[1588]: ERROR findFailure failed to parse timeText: Sep 21 09:57:26 1234</div><div class="line"></div><div class="line">#在fail2ban-0.9.2 是这样的错误</div><div class="line">Sep 21 10:05:37 12345 fail2ban.filterpyinotify[1305]: ERROR Error in FilterPyinotify callback: mktime argument out of range</div></pre></td></tr></table></figure>
-<p>A：这个错误源于一个不算bug的bug，当用户的hostname前面为数字的时候就会触发</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@12345 ~]# hostname</div><div class="line">12345.domain.com</div></pre></td></tr></table></figure>
-<p>在日志中，<strong>12345.domain.com</strong>前面的<strong>12345</strong>被当作是年份被解析了，笔者的vps很不幸，hostname就是数字开头的，而且当时的版本还是fail2ban-0.9.2，排错过程十分辛苦。<br> 解决的方法有很多，比如最直接的修改hostname</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysconfig/network</div></pre></td></tr></table></figure>
-<p>而笔者采用的方案是修改 rsyslog 的日志格式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">vi /etc/rsyslog.conf</div><div class="line"></div><div class="line"># Use default timestamp format</div><div class="line">#$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat</div><div class="line">$template FileFormat,&quot;%TIMESTAMP:::date-rfc3339% %HOSTNAME% %syslogtag%%msg:::sp-if-no-1st-sp%%msg:::drop-last-lf%\n&quot;</div><div class="line">$ActionFileDefaultTemplate FileFormat</div></pre></td></tr></table></figure>
-<p>重启 rsyslog 服务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service rsyslog restart</div></pre></td></tr></table></figure>
-<p>关于rsyslog日志格式的说明：<br><a href="http://www.rsyslog.com/doc/v8-stable/configuration/templates.html#reserved-template-names" target="_blank" rel="external">http://www.rsyslog.com/doc/v8-stable/configuration/templates.html#reserved-template-names</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2015/09/21/centos-fail2ban/" data-id="cizja3zx9000bm9zxgkuaw254" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-  
     <article id="post-ygys-crack" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/03/15/ygys-crack/" class="article-date">
@@ -161,19 +85,15 @@
       
         <p>╮(╯_╰)╭<br> 貌似最近，愚公移山2出来了呢，百度了半天都没有破解内购的，于是心血来潮。。。。</p>
 <p>国际惯例。。反编译<br><img src="/2015/03/15/ygys-crack/ygys-crack_1.jpg" alt="ygys-crack_1" title="ygys-crack_1"></p>
-<p>发现了3大运营商的内购sdk，分别是电信，联通，移动。<br><img src="/2015/03/15/ygys-crack/ygys-crack_2.jpg" alt="ygys-crack_2" title="ygys-crack_2"></p>
-<p>经过分析后，发现三大运营商的支付，由HTMobilePayment负责，调用里面的doPay函数，同时传入一个HTMPPayListener作为参数，在doPay里将HTMPPayListener传入对应的付费sdk，当支付完成时，调用HTMPPayListener的onHTPayCompleted()。<br><img src="/2015/03/15/ygys-crack/ygys-crack_3.jpg" alt="ygys-crack_3" title="ygys-crack_3"></p>
-<img src="/2015/03/15/ygys-crack/ygys-crack_4.jpg" alt="ygys-crack_4" title="ygys-crack_4">  
-<p> NOTE：付费sdk往往使用回调函数的形式，比如移动用的是OnPurchaseListener的onBillingFinish()，找到实现它的类就可以看到支付成功后是怎么一回事<br> 这里有smail的指令，看熟练之后其实和看源代码差不多<a href="http://blog.csdn.net/xiaotian15/article/details/8538406" target="_blank" rel="external">http://blog.csdn.net/xiaotian15/article/details/8538406</a></p>
-<p>于是，我们跳过doPay的调用，直接调用onHTPayCompleted()。<br><img src="/2015/03/15/ygys-crack/ygys-crack_5.jpg" alt="ygys-crack_5" title="ygys-crack_5"></p>
-<p>重编译<br><img src="/2015/03/15/ygys-crack/ygys-crack_6.jpg" alt="ygys-crack_6" title="ygys-crack_6"></p>
-<p>由于我们只是改了smail的指令，把编译出的apk里的classes.dex提取出来，替换进原版的apk里即可，最后别忘了重新签名，否则是不能安装的。<br><img src="/2015/03/15/ygys-crack/ygys-crack_7.jpg" alt="ygys-crack_7" title="ygys-crack_7"></p>
-<p>恩，最后是留给伸手党的= =<br><a href="http://pan.baidu.com/s/1o6qRIOU" target="_blank" rel="external">http://pan.baidu.com/s/1o6qRIOU</a><br> elg3</p>
-
+        
+          <p class="article-more-link">
+            <a href="/2015/03/15/ygys-crack/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2015/03/15/ygys-crack/" data-id="cizja3zx8000am9zxy417vs26" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2015/03/15/ygys-crack/" data-id="cizjv6jt6000apjzxjuzfdq4r" class="article-share-link">Share</a>
       
       
     </footer>
@@ -207,18 +127,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>　　前几天弄项目发现这个问题，在模版文件中，<code>$apply</code>是一个数组，但是总是匹配不上。<br>　　模版的代码如下:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="keyword">if</span> condition=<span class="string">"$plist.name eq $apply.plan_province"</span>&gt;</div><div class="line">    &lt;option value=<span class="string">"$plist.name"</span>&gt;&#123;$plist.name&#125;&lt;/option&gt;</div><div class="line">&lt;/<span class="keyword">if</span>&gt;;</div></pre></td></tr></table></figure></p>
-<p>　　经过查看Runtime里的编译模版，发现condition表达式转换成了：<br><code>condition=&quot;$plist[&quot;name&quot;] == $apply.plan_province&quot;</code><br>　　然而我们期望的是替换为：<br> <code>condition=&quot;$plist[&quot;name&quot;] == $apply[&#39;plan_province&#39;]&quot;</code></p>
-<p>　　问题出现在这里，<code>eq</code>后边的变量<code>$apply.plan_province</code>并没有被转换为<code>$apply[&#39;plan_province&#39;]</code>，经过跟踪发现是<code>ThinkPHP/Library/Think/Template/TagLib.class.php</code>中的代码导致了这个问题。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">```PHP</div><div class="line">/**</div><div class="line">     * 解析条件表达式</div><div class="line">     * @access public</div><div class="line">     * @param string $condition 表达式标签内容</div><div class="line">     * @return array</div><div class="line">*/</div><div class="line">public function parseCondition($condition) &#123;</div><div class="line">    $condition = str_ireplace(array_keys($this-&gt;comparison),array_values($this-&gt;comparison),$condition);</div><div class="line">    $condition = preg_replace(&apos;/$(w+):(w+)s/is&apos;,&apos;$\1-&gt;\2 &apos;,$condition);</div><div class="line">    switch(strtolower(C(&apos;TMPL_VAR_IDENTIFY&apos;))) &#123;</div><div class="line">        case &apos;array&apos;: // 识别为数组</div><div class="line">            $condition = preg_replace(&apos;/$(w+).(w+)s/is&apos;,&apos;$\1[&quot;\2&quot;] &apos;,$condition);</div><div class="line">            break;</div><div class="line">        case &apos;obj&apos;:  // 识别为对象</div><div class="line">            $condition = preg_replace(&apos;/$(w+).(w+)s/is&apos;,&apos;$\1-&gt;\2 &apos;,$condition);</div><div class="line">                break;</div><div class="line">            default:  // 自动判断数组或对象 只支持二维</div><div class="line">                $condition = preg_replace(&apos;/$(w+).(w+)s/is&apos;,&apos;(is_array($\1)?$\1[&quot;\2&quot;]:$\1-&gt;\2) &apos;,$condition);</div><div class="line">   &#125;</div><div class="line">    if(false !== strpos($condition, &apos;$Think&apos;))</div><div class="line">        $condition = preg_replace_callback(&apos;/($Think.*?)s/is&apos;, array($this, &apos;parseThinkVar&apos;), $condition);</div><div class="line">    return $condition;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>　　根据<code>$condition = preg_replace(&#39;/$(w+).(w+)s/is&#39;,&#39;$\1[&quot;\2&quot;] &#39;,$condition)</code> 大概可以猜出来，里面的“s”表示要匹配一个空格，比如<code>[$plist.name ]</code>就可以匹配到，<code>[$apply.plan_province]</code>就不行，当然了，在表达式后面加一个空格，可以解决问题： </p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="keyword">if</span> condition=<span class="string">"$plist.name eq $apply.plan_province "</span>&gt;</div><div class="line">    &lt;option value=<span class="string">"$plist.name"</span>&gt;&#123;$plist.name&#125;&lt;/option&gt;</div><div class="line">&lt;/<span class="keyword">if</span>&gt;;</div></pre></td></tr></table></figure>
-<p>　　不过呢，这样确实不爽，于是我改了一下，吧<code>s</code>变成<code>(s|$)</code>,也就是匹配空格或者是匹配结尾，然后变成这样<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">     * 解析条件表达式</div><div class="line">     * <span class="doctag">@access</span> public</div><div class="line">     * <span class="doctag">@param</span> string $condition 表达式标签内容</div><div class="line">     * <span class="doctag">@return</span> array</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">parseCondition</span><span class="params">($condition)</span> </span>&#123;</div><div class="line">    $condition = str_ireplace(array_keys(<span class="keyword">$this</span>-&gt;comparison),array_values(<span class="keyword">$this</span>-&gt;comparison),$condition);</div><div class="line">    $condition = preg_replace(<span class="string">'/$(w+):(w+)s/is'</span>,<span class="string">'$\1-&gt;\2 '</span>,$condition);</div><div class="line">    <span class="keyword">switch</span>(strtolower(C(<span class="string">'TMPL_VAR_IDENTIFY'</span>))) &#123;</div><div class="line">        <span class="keyword">case</span> <span class="string">'array'</span>: <span class="comment">// 识别为数组</span></div><div class="line">            $condition = preg_replace(<span class="string">'/$(w+).(w+)(s|$)/is'</span>,<span class="string">'$\1["\2"] '</span>,$condition);</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> <span class="string">'obj'</span>:  <span class="comment">// 识别为对象</span></div><div class="line">            $condition = preg_replace(<span class="string">'/$(w+).(w+)(s|$)/is'</span>,<span class="string">'$\1-&gt;\2 '</span>,$condition);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">default</span>:  <span class="comment">// 自动判断数组或对象 只支持二维</span></div><div class="line">                $condition = preg_replace(<span class="string">'/$(w+).(w+)(s|$)/is'</span>,<span class="string">'(is_array($\1)?$\1["\2"]:$\1-&gt;\2) '</span>,$condition);</div><div class="line">   &#125;</div><div class="line">    <span class="keyword">if</span>(<span class="keyword">false</span> !== strpos($condition, <span class="string">'$Think'</span>))</div><div class="line">        $condition = preg_replace_callback(<span class="string">'/($Think.*?)(s|$)/is'</span>, <span class="keyword">array</span>(<span class="keyword">$this</span>, <span class="string">'parseThinkVar'</span>), $condition);</div><div class="line">    <span class="keyword">return</span> $condition;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>　　这样不用在末尾加空格也可以解决问题。<br><a href="https://github.com/liu21st/thinkphp/pull/219" target="_blank" rel="external">https://github.com/liu21st/thinkphp/pull/219</a><br> 已经提交上github。。。等合并</p>
-
+        <p>　　前几天弄项目发现这个问题，在模版文件中，<code>$apply</code>是一个数组，但是总是匹配不上。<br>
+        
+          <p class="article-more-link">
+            <a href="/2014/12/06/thinkphp-bug/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2014/12/06/thinkphp-bug/" data-id="cizja3zx60009m9zxx8342gy4" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2014/12/06/thinkphp-bug/" data-id="cizjv6jt20008pjzxsj9h7npd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -254,19 +172,15 @@
       
         <p>╮(╯_╰)╭</p>
 <p>偶然发现的问题<br> 在非学生票季(<strong>暑假6月1日至9月30日、寒假12月1日至3月31日之外</strong>)，在购票页面，要选择乘车人的时候，如果选中的是<strong>学生乘客</strong>。</p>
-<p>有时候是正常的，像这样<br><img src="/2014/10/29/12306-bug/12306-bug-1.jpg" alt="12306-bug-1" title="12306-bug-1"></p>
-<p>但是在个别车次，如T5684，就会有这样的问题<br><img src="/2014/10/29/12306-bug/12306-bug-1.jpg" alt="12306-bug-2" title="12306-bug-2"><br> 整个页面发白，然后不出任何提示</p>
-<p>还好Lz用的是Chrome系的浏览器啊，还好Lz做过Web啊<br> 果断F12，一番寻找之后发现是一下两个控件在搞鬼，他们显示在最前面，所以整个页面(除了Header)都被他们覆盖了<br><img src="/2014/10/29/12306-bug/12306-bug-3.jpg" alt="12306-bug-3" title="12306-bug-3"> </p>
-<p>解决方法也很简单，输入以下Javascript脚本即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$(&quot;.dhx_modal_cover_ifr&quot;).hide();&lt;br&gt;&lt;/br&gt;</div><div class="line">$(&quot;.dhx_modal_cover_dv&quot;).hide();</div></pre></td></tr></table></figure></p>
-<img src="/2014/10/29/12306-bug/12306-bug-4.jpg" alt="12306-bug-4" title="12306-bug-4"> 
-<p>然后就可以继续选人啊，输验证码了</p>
-<p>当然，输入验证码之后，会出现个白框，这时候点一下白框里面就好了<br><img src="/2014/10/29/12306-bug/12306-bug-5.jpg" alt="12306-bug-5" title="12306-bug-5"> </p>
-<p>然后就是这样，该干嘛干嘛咯<br><img src="/2014/10/29/12306-bug/12306-bug-6.jpg" alt="12306-bug-6" title="12306-bug-6"> </p>
-
+        
+          <p class="article-more-link">
+            <a href="/2014/10/29/12306-bug/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2014/10/29/12306-bug/" data-id="cizja3zx50008m9zxno5jupy0" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2014/10/29/12306-bug/" data-id="cizjv6jt40009pjzxpdzo7ci6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -302,18 +216,15 @@
       
         <p>╮(╯_╰)╭</p>
 <p>恩，感觉还是挺不错的</p>
-<p>里程靠步数来计算的</p>
-<p>估计手环只有计步，时间什么的都是在同步之后手机负责计算的</p>
-<p>79的东西，这样已经不错了</p>
-<p>什么时候能统计游泳和骑车呢。。、</p>
-<p>估计第二版会显示时间</p>
-<img src="/2014/10/17/miband/miband-1.jpg" alt="miband-1" title="miband-1">
-<p>　　<br><img src="/2014/10/17/miband/miband-2.jpg" alt="miband-2" title="miband-2"></p>
-
+        
+          <p class="article-more-link">
+            <a href="/2014/10/17/miband/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2014/10/17/miband/" data-id="cizja3zx30007m9zxzo3ncw0r" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2014/10/17/miband/" data-id="cizjv6jsx0007pjzxterj5fqh" class="article-share-link">Share</a>
       
       
     </footer>
@@ -347,21 +258,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>中文（简体）64位：<a href="http://go.microsoft.com/fwlink/?LinkId=510229" target="_blank" rel="external">下载地址</a> 。<br> SHA-1 散列值：135E3193571C5AF9FBF36D24D07B2BE7EE49B2E8</p>
-<p>中文（简体）32位：<a href="http://go.microsoft.com/fwlink/?LinkId=510230" target="_blank" rel="external">下载地址</a> 。<br> SHA-1 散列值：3EE3A2033BE666BA55AFED3FCF6BB52A7C15C7CC</p>
+        <p>中文（简体）64位：<a href="http://go.microsoft.com/fwlink/?LinkId=510229">下载地址</a> 。<br> SHA-1 散列值：135E3193571C5AF9FBF36D24D07B2BE7EE49B2E8</p>
+<p>中文（简体）32位：<a href="http://go.microsoft.com/fwlink/?LinkId=510230">下载地址</a> 。<br> SHA-1 散列值：3EE3A2033BE666BA55AFED3FCF6BB52A7C15C7CC</p>
 <p>Key：NKJFK-GPHP7-G8C3J-P6JXR-HQRJR</p>
-<ul>
-<li>安装的时候不要闲着蛋疼选消费者版，不然不好激活。</li>
-<li>和win8.1驱动通用，估计内核没怎么更新</li>
-<li>360Chrome会出问题，地址栏里不显示东西，但可以复制粘贴</li>
-</ul>
-<p>其他就没了，也就是看着爽一点，Aero还是没回来，估计正式版也就这样子吧</p>
-<img src="/2014/10/02/setup-windows10/setup-windows10.jpg" alt="setup-windows10" title="setup-windows10">
-
+        
+          <p class="article-more-link">
+            <a href="/2014/10/02/setup-windows10/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2014/10/02/setup-windows10/" data-id="cizja3zx20006m9zxup9f8fo5" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2014/10/02/setup-windows10/" data-id="cizjv6jsv0006pjzxv2qwpuif" class="article-share-link">Share</a>
       
       
     </footer>
@@ -401,7 +309,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2014/10/01/hello-world/" data-id="cizja3zwy0004m9zx0truvop9" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2014/10/01/hello-world/" data-id="cizjv6jss0005pjzxodkoqfwj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -435,12 +343,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>╮(╯_╰)╭<br>好吧，我不是来咆哮的<br>写了一天代码，头晕晕<br>求bug<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div></pre></td><td class="code"><pre><div class="line">#NoTrayIcon</div><div class="line">#Region ;**** 参数创建于 ACNWrapper_GUI ****</div><div class="line">#AutoIt3Wrapper_icon=icon.ICO</div><div class="line">#AutoIt3Wrapper_outfile=D:\系统功能扩展.exe</div><div class="line">#AutoIt3Wrapper_Res_Description=黑屏热键(Ctrl+F12)/自动ActiveSync同步设置/禁止ActiveSync自启动/记录电源信息</div><div class="line">#AutoIt3Wrapper_Res_Fileversion=11.3.12.0</div><div class="line">#AutoIt3Wrapper_Res_SaveSource=y</div><div class="line">#AutoIt3Wrapper_Res_Field=参数|运行参数： 取消[黑屏热键]: /noMonitorPowerOff 取消[自动ActiveSync同步设置]: /noAutoActiveSync 取消禁止ActiveSync自启动]: /noActiveSyncRun 取消[记录电源信息]: /noBatteryStatus</div><div class="line">#EndRegion ;**** 参数创建于 ACNWrapper_GUI ****</div><div class="line"></div><div class="line"></div><div class="line">Global Const $lciWM_SYSCommand = 274</div><div class="line">Global Const $lciSC_MonitorPower = 61808</div><div class="line">Global Const $lciPower_Off = 1</div><div class="line">Global Const $lciPower_On = -1</div><div class="line">Global Const $TRAY_CHECKED = 1</div><div class="line">Global Const $TRAY_UNCHECKED = 4</div><div class="line">Global Const $TRAY_ENABLE = 64</div><div class="line"></div><div class="line">Opt(&quot;WinTitleMatchMode&quot;, 4)</div><div class="line">Opt(&quot;WinTextMatchMode&quot;, 2)</div><div class="line">Opt(&quot;TrayMenuMode&quot;, 1)</div><div class="line"></div><div class="line"></div><div class="line">;创建托盘</div><div class="line">$Tray_Item_1 = TrayCreateItem(&quot;黑屏热键(Ctrl+F12)&quot;)</div><div class="line">TrayCreateItem(&quot;&quot;)</div><div class="line">$Tray_Item_2 = TrayCreateItem(&quot;自动ActiveSync同步设置&quot;)</div><div class="line">TrayCreateItem(&quot;&quot;)</div><div class="line">$Tray_Item_3 = TrayCreateItem(&quot;禁止ActiveSync自启动&quot;)</div><div class="line">TrayCreateItem(&quot;&quot;)</div><div class="line">$Tray_Item_4 = TrayCreateItem(&quot;记录电源信息&quot;)</div><div class="line">TrayCreateItem(&quot;&quot;)</div><div class="line">$Tray_Item_Exit = TrayCreateItem(&quot;退出&quot;, -1, -1, 0)</div><div class="line">TraySetIcon(@ScriptFullPath, 0)</div><div class="line">TraySetToolTip(&quot;系统功能扩展&quot;)</div><div class="line">TraySetState()</div><div class="line"></div><div class="line">;初始化黑屏热键</div><div class="line">$Dll = DllOpen(&quot;user32.dll&quot;)</div><div class="line">$MonitorPower = -1</div><div class="line">If StringInStr($CmdLineRaw, &quot;/noMonitorPowerOff&quot;) = 0 Then</div><div class="line"> TrayItemSetState($Tray_Item_1, $TRAY_CHECKED)</div><div class="line"> HotKeySet(&quot;^&#123;F12&#125;&quot;, &quot;_MonitorPowerOff&quot;)</div><div class="line">EndIf</div><div class="line"></div><div class="line">;初始化自动ActiveSync同步设置</div><div class="line">$WinTitle1 = &quot;Microsoft ActiveSync&quot;</div><div class="line">$WinText1 = &quot;如果您继续，您将只能同步文件、文件夹和其他&quot;</div><div class="line">$WinTitle2 = &quot;同步设置向导&quot;</div><div class="line">$WinText2 = &quot;欢迎使用 Pocket PC 同步设置向导&quot;</div><div class="line">If StringInStr($CmdLineRaw, &quot;/noAutoActiveSync&quot;) = 0 Then</div><div class="line"> TrayItemSetState($Tray_Item_2, $TRAY_CHECKED)</div><div class="line"> AdlibRegister(&quot;_AutoActiveSync&quot;, 500)</div><div class="line">EndIf</div><div class="line"></div><div class="line">;开启ActiveSync启动项监测</div><div class="line">If StringInStr($CmdLineRaw, &quot;/noActiveSyncRun&quot;) = 0 Then</div><div class="line"> TrayItemSetState($Tray_Item_3, $TRAY_CHECKED)</div><div class="line"> AdlibRegister(&quot;_ActiveSyncRun&quot;, 5000)</div><div class="line">EndIf</div><div class="line"></div><div class="line">;初始化电源信息记录</div><div class="line">Dim $Last_Data[6]</div><div class="line">FileWriteLine(&quot;d:\电源记录.ini&quot;, IniRead(&quot;d:\电源记录.ini&quot;, &quot;log&quot;, &quot;last&quot;, &quot;无上次退出记录&quot;) &amp; &quot;——程序退出&quot;)</div><div class="line">FileWriteLine(&quot;d:\电源记录.ini&quot;, &quot;&quot;)</div><div class="line">$Write = 0</div><div class="line">$Extra_Text = &quot;&quot;</div><div class="line">If StringInStr($CmdLineRaw, &quot;/noBatteryStatus&quot;) = 0 Then</div><div class="line"> TrayItemSetState($Tray_Item_4, $TRAY_CHECKED)</div><div class="line"> _BatteryStatus(1, &quot;——程序启动&quot;)</div><div class="line"> AdlibRegister(&quot;_BatteryStatus&quot;, 5000)</div><div class="line">EndIf</div><div class="line"></div><div class="line"></div><div class="line">While 1</div><div class="line"> $msg = TrayGetMsg()</div><div class="line"> Select</div><div class="line">  Case $msg = 0</div><div class="line">   ContinueLoop</div><div class="line">  Case $msg = $Tray_Item_1 ;选项开关_黑屏热键(Ctrl+F12)</div><div class="line">   Select</div><div class="line">    Case TrayItemGetState($Tray_Item_1) = $TRAY_UNCHECKED + $TRAY_ENABLE</div><div class="line">     HotKeySet(&quot;^&#123;F12&#125;&quot;)</div><div class="line">     $MonitorPower = $lciPower_On</div><div class="line">     $hwnd = WinGetHandle(&apos;classname=Progman&apos;)</div><div class="line">     DllCall($Dll, &quot;lresult&quot;, &quot;SendMessageW&quot;, &quot;hwnd&quot;, $hwnd, &quot;uint&quot;, $lciWM_SYSCommand, &quot;wparam&quot;, $lciSC_MonitorPower, &quot;lparam&quot;, $lciPower_On)</div><div class="line">    Case TrayItemGetState($Tray_Item_1) = $TRAY_CHECKED + $TRAY_ENABLE</div><div class="line">     HotKeySet(&quot;^&#123;F12&#125;&quot;, &quot;_MonitorPowerOff&quot;)</div><div class="line">   EndSelect</div><div class="line"></div><div class="line">  Case $msg = $Tray_Item_2 ;选项开关_自动ActiveSync同步设置</div><div class="line">   Select</div><div class="line">    Case TrayItemGetState($Tray_Item_2) = $TRAY_UNCHECKED + $TRAY_ENABLE</div><div class="line">     AdlibUnRegister(&quot;_AutoActiveSync&quot;)</div><div class="line">    Case TrayItemGetState($Tray_Item_2) = $TRAY_CHECKED + $TRAY_ENABLE</div><div class="line">     AdlibRegister(&quot;_AutoActiveSync&quot;, 500)</div><div class="line">   EndSelect</div><div class="line"></div><div class="line">  Case $msg = $Tray_Item_3 ;选项开关_禁止ActiveSync自启动</div><div class="line">   Select</div><div class="line">    Case TrayItemGetState($Tray_Item_3) = $TRAY_UNCHECKED + $TRAY_ENABLE</div><div class="line">     AdlibUnRegister(&quot;_ActiveSyncRun&quot;)</div><div class="line">    Case TrayItemGetState($Tray_Item_3) = $TRAY_CHECKED + $TRAY_ENABLE</div><div class="line">     AdlibRegister(&quot;_ActiveSyncRun&quot;, 5000)</div><div class="line">   EndSelect</div><div class="line"></div><div class="line">  Case $msg = $Tray_Item_4 ;选项开关_记录电源信息</div><div class="line">   Select</div><div class="line">    Case TrayItemGetState($Tray_Item_4) = $TRAY_UNCHECKED + $TRAY_ENABLE</div><div class="line">     AdlibUnRegister(&quot;_BatteryStatus&quot;)</div><div class="line">     _BatteryStatus(1, &quot;——电源记录功能被关闭&quot;)</div><div class="line">     IniWrite(&quot;d:\电源记录.ini&quot;, &quot;log&quot;, &quot;last&quot;, &apos;&apos;)</div><div class="line">    Case TrayItemGetState($Tray_Item_3) = $TRAY_CHECKED + $TRAY_ENABLE</div><div class="line">     _BatteryStatus(1, &quot;——电源记录功能被开启&quot;)</div><div class="line">     AdlibRegister(&quot;_BatteryStatus&quot;, 5000)</div><div class="line">   EndSelect</div><div class="line"></div><div class="line">  Case $msg = $Tray_Item_Exit ;退出</div><div class="line">   DllClose($Dll)</div><div class="line">   Exit</div><div class="line"> EndSelect</div><div class="line">WEnd</div><div class="line"></div><div class="line">;函数部分_黑屏热键(Ctrl+F12)</div><div class="line">Func _MonitorPowerOff()</div><div class="line"> If $MonitorPower = $lciPower_On Then</div><div class="line">  $MonitorPower = $lciPower_Off</div><div class="line">  $hwnd = WinGetHandle(&apos;classname=Progman&apos;)</div><div class="line">  While $MonitorPower = $lciPower_Off And $msg &lt;&gt; $Tray_Item_Exit</div><div class="line">   DllCall($Dll, &quot;lresult&quot;, &quot;SendMessageW&quot;, &quot;hwnd&quot;, $hwnd, &quot;uint&quot;, $lciWM_SYSCommand, &quot;wparam&quot;, $lciSC_MonitorPower, &quot;lparam&quot;, $lciPower_Off)</div><div class="line">   Sleep(50)</div><div class="line">  WEnd</div><div class="line"></div><div class="line"> ElseIf $MonitorPower = $lciPower_Off Then</div><div class="line">  $MonitorPower = $lciPower_On</div><div class="line">  $hwnd = WinGetHandle(&apos;classname=Progman&apos;)</div><div class="line">  DllCall($Dll, &quot;lresult&quot;, &quot;SendMessageW&quot;, &quot;hwnd&quot;, $hwnd, &quot;uint&quot;, $lciWM_SYSCommand, &quot;wparam&quot;, $lciSC_MonitorPower, &quot;lparam&quot;, $lciPower_On)</div><div class="line"> EndIf</div><div class="line">EndFunc   ;==&gt;_MonitorPowerOff</div><div class="line"></div><div class="line">;函数部分_自动ActiveSync同步设置</div><div class="line">Func _AutoActiveSync()</div><div class="line"> If WinExists($WinTitle1, $WinText1) = 1 Then</div><div class="line">  WinActivate($WinTitle1, $WinText1)</div><div class="line">  ControlClick($WinTitle1, $WinText1, &quot;Button1&quot;)</div><div class="line"></div><div class="line">  WinWait($WinTitle2, $WinText2, 1)</div><div class="line">  WinActivate($WinTitle2, $WinText2)</div><div class="line">  ControlClick($WinTitle2, $WinText2, &quot;Button4&quot;)</div><div class="line"></div><div class="line">  WinWait($WinTitle1, &quot;&quot;, 1)</div><div class="line">  WinClose($WinTitle1)</div><div class="line"> EndIf</div><div class="line">EndFunc   ;==&gt;_AutoActiveSync</div><div class="line"></div><div class="line">;函数部分_禁止ActiveSync自启动</div><div class="line">Func _ActiveSyncRun()</div><div class="line"> RegDelete(&quot;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run&quot;, &quot;H/PC Connection Agent&quot;)</div><div class="line">EndFunc   ;==&gt;_ActiveSyncRun</div><div class="line"></div><div class="line">;函数部分_记录电源信息</div><div class="line">Func _BatteryStatus($Write = 0, $Extra_Text = &quot;&quot;)</div><div class="line"> $Data = _WinAPI_GetSystemPowerStatus();获取电源信息</div><div class="line"></div><div class="line"> ;分析电源状态</div><div class="line"> Switch $Data[0]</div><div class="line">  Case 0</div><div class="line">   $PowerStatus = &apos;DC&apos;</div><div class="line">  Case 1</div><div class="line">   $PowerStatus = &apos;AC&apos;</div><div class="line">  Case Else</div><div class="line">   $PowerStatus = &apos;Unknown&apos;</div><div class="line"> EndSwitch</div><div class="line"></div><div class="line"> ;计算剩余时间并补零</div><div class="line"> $Hour = Int($Data[3] / 3600)</div><div class="line"> $Min = Int(($Data[3] - $Hour * 3600) / 60)</div><div class="line"> If $Min &lt; 10 Then $Min = &quot;0&quot; &amp; $Min</div><div class="line"></div><div class="line"> ;百分比补零</div><div class="line"> $Percent = $Data[2]</div><div class="line"> If $Percent &lt; 10 Then $Percent = &quot;0&quot; &amp; $Percent</div><div class="line"> $Line = @YEAR &amp; &quot;-&quot; &amp; @MON &amp; &quot;-&quot; &amp; @MDAY &amp; &quot;, &quot; &amp; @HOUR &amp; &quot;:&quot; &amp; @MIN &amp; &quot;:&quot; &amp; @SEC &amp; &quot;, &quot; &amp; $PowerStatus &amp; &quot;, &quot; &amp; $Percent &amp; &quot;%, &quot; &amp; $Hour &amp; &quot;:&quot; &amp; $Min</div><div class="line"></div><div class="line"> IniWrite(&quot;d:\电源记录.ini&quot;, &quot;log&quot;, &quot;last&quot;, &apos;&quot;&apos; &amp; $Line &amp; &apos;&quot;&apos;)</div><div class="line"> If $Data[0] &lt;&gt; $Last_Data[0] Or $Data[3] &lt;&gt; $Last_Data[3] Or $Data[2] &lt;&gt; $Last_Data[2] Or $Write = 1 Then FileWriteLine(&quot;d:\电源记录.ini&quot;, $Line &amp; $Extra_Text)</div><div class="line"></div><div class="line"> For $i = 0 To 4</div><div class="line">  $Last_Data[$i] = $Data[$i]</div><div class="line"> Next</div><div class="line">EndFunc   ;==&gt;_BatteryStatus</div><div class="line"></div><div class="line"></div><div class="line">Func _WinAPI_GetSystemPowerStatus()</div><div class="line"></div><div class="line"> Local $tSYSTEM_POWER_STATUS = DllStructCreate(&apos;byte;byte;byte;byte;dword;dword&apos;)</div><div class="line"> Local $Ret = DllCall(&apos;kernel32.dll&apos;, &apos;int&apos;, &apos;GetSystemPowerStatus&apos;, &apos;ptr&apos;, DllStructGetPtr($tSYSTEM_POWER_STATUS))</div><div class="line"></div><div class="line"> If (@error) Or (Not $Ret[0]) Then</div><div class="line">  Return SetError(1, 0, 0)</div><div class="line"> EndIf</div><div class="line"></div><div class="line"> Local $Result[5]</div><div class="line"></div><div class="line"> $Result[0] = DllStructGetData($tSYSTEM_POWER_STATUS, 1)</div><div class="line"> $Result[1] = DllStructGetData($tSYSTEM_POWER_STATUS, 2)</div><div class="line"> $Result[2] = DllStructGetData($tSYSTEM_POWER_STATUS, 3)</div><div class="line"> $Result[3] = DllStructGetData($tSYSTEM_POWER_STATUS, 5)</div><div class="line"> $Result[4] = DllStructGetData($tSYSTEM_POWER_STATUS, 6)</div><div class="line"></div><div class="line"> For $i = 3 To 4</div><div class="line">  If _WinAPI_DWordToInt($Result[$i]) = -1 Then</div><div class="line">   $Result[$i] = -1</div><div class="line">  EndIf</div><div class="line"> Next</div><div class="line"></div><div class="line"> Return $Result</div><div class="line">EndFunc   ;==&gt;_WinAPI_GetSystemPowerStatus</div><div class="line"></div><div class="line"> </div><div class="line"></div><div class="line">Func _WinAPI_DWordToInt($iValue)</div><div class="line"></div><div class="line"> Local $tData = DllStructCreate(&apos;int&apos;)</div><div class="line"></div><div class="line"> DllStructSetData($tData, 1, $iValue)</div><div class="line"></div><div class="line"> Return DllStructGetData($tData, 1)</div><div class="line">EndFunc   ;==&gt;_WinAPI_DWordToInt</div></pre></td></tr></table></figure></p>
-
+        <p>╮(╯_╰)╭<br>好吧，我不是来咆哮的<br>写了一天代码，头晕晕<br>求bug  </p>
+        
+          <p class="article-more-link">
+            <a href="/2011/03/12/whiny-code/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2011/03/12/whiny-code/" data-id="cizja3zwp0003m9zxlc9sxkdv" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2011/03/12/whiny-code/" data-id="cizjv6jsq0004pjzxp41t7298" class="article-share-link">Share</a>
       
       
     </footer>
@@ -478,28 +390,15 @@
 <p>　　最近有位朋友(名字忘了，致歉)问二次封装的问题，今天来了点兴致，来一次封装实战。</p>
 </blockquote>
 <p>　　母盘使用donghai老师最新可以信任的版本GhostXP_SP3电脑公司特别版_v9.2<br>　　donghai老师是我的第一位封装老师，现在他可以确信的作品不明，这个算是一个怀念吧 </p>
-<ignore_js_op>
-
-<img src="/2009/07/31/ghostxp-re-sysprep/sysprep_01.jpg" alt="sysprep_01" title="sysprep_01">
-<h4 id="ISO文件信息"><a href="#ISO文件信息" class="headerlink" title="ISO文件信息"></a>ISO文件信息</h4><p><strong>文件</strong>：F:\GhostXP<em>SP3电脑公司特别版  </em>\GhostXP_SP3电脑公司特别版_v9.2.iso<br><strong>大小</strong>：719564800 字节<br><strong>修改时间</strong>：2008年8月31日, 20:18:40<br><strong>MD5</strong>：C5639A1E30EF31CF68D87BE4A301CC88<br><strong>SHA1</strong>： 30313025774076E5999E2D929D600E3FBE3BF694<br><strong>CRC32</strong>：E0F3683E </p>
-<p>　　推荐在虚拟机中进行，因为我们的目标是二次封装，在还原完ghost镜像之后，进入Pe，删除原配的驱动包(把 <code>C:\windows\drivers</code>目录下的文件删除)，把<code>C:\windows\runonce\注册组件时运行\任务编排.cmd</code>里面的前四行内容删去。<br>　　原因很简单，删除驱动，就可以保持系统在驱动方面的纯净(注册表的另说)。删除<code>任务编排.cmd</code>里边的批处理，更是为了纯净。<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_02.jpg" alt="sysprep_02" title="sysprep_02"></p>
-<p>　　进入部署模式，在S&amp;R&amp;S选择扩展接口的时候，不要选那两个选项。<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_03.jpg" alt="sysprep_03" title="sysprep_03"></p>
-<p>　　部署完成得出奇的快(－－，)之后进入桌面，选择删除集成驱动。<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_04.jpg" alt="sysprep_04" title="sysprep_04"></p>
-<p>　　很不幸，集成了我们不想要的软件，因为我们是要一个纯净的系统，不用说，把ACESEE、Maxthon、暴风影音、千千静听、搜狗输入法、迅雷卸载。office推荐保留，至于QQ，只要在注册表里删除卸载信息和文件关联和快捷方式。<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_05.jpg" alt="sysprep_05" title="sysprep_05"></p>
-<p>　　至此这个系统可以说是比较纯正的了，把软件删除完之后记得重启一下，之后把系统GHOST一次。<br>　　之后进入微软官方网址<a href="http://windowsupdate.microsoft.com" target="_blank" rel="external">http://windowsupdate.microsoft.com</a>到里边查找需要的更新。更新了一堆东西之后再次更新才得到需要的更新，一个个下载吧。<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_06.jpg" alt="sysprep_06" title="sysprep_06"></p>
-<p>　　下载完成后，把系统还原成刚才备份的那个，避免留使用痕迹。打补丁的时候推荐加上<code>passive /norestart /nobackup</code>这三个命令。利用批处理很快就补完了，再使用ylmf补丁包，安装dx运行库，顺便删除补丁垃圾。<br>　　至于oem和开始菜单这种东西我就不赘述了，你们都知道 －－。<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_07.jpg" alt="sysprep_07" title="sysprep_07"></p>
-<p>　　还有一个任务管理器的设置，这个本人觉得比较实用。<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_08.jpg" alt="sysprep_08" title="sysprep_08"></p>
-<p>　　随便把把系统减肥一下，这个对于控制体积很有用的。<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_09.jpg" alt="sysprep_09" title="sysprep_09"></p>
-<p>　　驱动我使用自由天空的自由天空综合驱动包 <strong>SkyDriverXP_V9.5</strong> 精简版，这个感觉很方便，很实在。<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_10.jpg" alt="sysprep_10" title="sysprep_10"></p>
-<p>　　再ghost备份一次，马上就要封装了，好兴奋。<br>　　封装不用说，我当然用小兵老师的封装利器Newprep2009，没有什么太多的要求，记得把自由天空的驱动解压程序加上去就可以了。<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_11.jpg" alt="sysprep_11" title="sysprep_11"><br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_12.jpg" alt="sysprep_12" title="sysprep_12"></p>
-<p>　　封装完之后进入Pe删除一些垃圾。<br>删除<code>C:\Documents and Settings\Administrator\Local Settings\Application Data\IconCache.db</code>。<br>删除<code>C:\Documents and Settings\All Users\Documents\My Music\示例音乐\北京2008一起飞.wma</code>。<br>删除<code>C:\Documents and Settings\Administrator\Local Settings\Application Data\Microsoft\Media Player\*.*</code>。<br>　　用小兵的DeepinXP中的<code>C:\WINDOWS\Driver Cache\i386\*.*</code>来替换当前的文件。<br>删除<code>C:\WINDOWS\system32\CatRoot2</code>。<br>删除<code>C:\WINDOWS\system32\dllcache\*.*</code>。<br>删除<code>C:\WINDOWS\system32\config\*.sav</code>。<br>删除所有的<code>*.log</code>。<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_13.jpg" alt="sysprep_13" title="sysprep_13"><br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_14.jpg" alt="sysprep_14" title="sysprep_14"></p>
-<p>　　开始测试，十分成功<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_15.jpg" alt="sysprep_15" title="sysprep_15"><br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_16.jpg" alt="sysprep_16" title="sysprep_16"><br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_17.jpg" alt="sysprep_17" title="sysprep_17"></p>
-<p>呵呵<br>这个二次封装实战感觉挺成功的<br>但是只封装了一个纯净版<br>体积控制方面感觉可以(感谢小兵老师)<br>我的第一次封装也是二次封装<br>回想起来很怀念。</p>
-</ignore_js_op>
+        
+          <p class="article-more-link">
+            <a href="/2009/07/31/ghostxp-re-sysprep/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2009/07/31/ghostxp-re-sysprep/" data-id="cizja3zx00005m9zxcp6convx" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2009/07/31/ghostxp-re-sysprep/" data-id="cizjv6jso0003pjzxm7750ij3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -542,76 +441,58 @@
 <li>修正了上个系统中的一些小bug，作了一些小修改</li>
 </ul>
 <p>作者：JS<br>2009年7月28日</p>
-<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>文件：GHOSTXP_SP3JS特别版_V1.4.iso<br>大小：727033856 字节<br>修改时间：2009年7月29日, 12:27:16<br><strong>MD5：8604E0BB8D5ED36C5BFE17C694906A35</strong><br><strong>SHA1：50BF09B06F0559D808A3215F0E8BAD6B5CEA0431</strong><br><strong>CRC32：DB3A24A9</strong><br>地址：<br><em>(很不幸，已经失效)</em><br>ctdisk网盘：<a href="http://www.ctdisk.com/file/123228" target="_blank" rel="external">http://www.ctdisk.com/file/123228</a><br>QQ中转站：发封邮件到我的邮箱：297259024@qq.com即可获取下载地址<br>ps：TX太BT， 我没办法</p>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
-<li>源安装盘：Windows XP SP3 Deepin精简版</li>
-<li>补丁更新：2009年06月</li>
-<li>封装辅助程序：一键封装工具Newprep</li>
-<li>集成硬件驱动：自由天空综合驱动包SkyDriverXP_V9.5 精简版</li>
-</ul>
-<h2 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h2><p>　　本系统配有<strong>万能GHOT备份恢复</strong>软件。可以在GUI界面下进行操作，可使用命令行参数:<br>/yjbf 静默设置备份<br>/yjhf 静默设置恢复<br>/cancel 取消已有的设置  </p>
-<h2 id="集成的驱动"><a href="#集成的驱动" class="headerlink" title="集成的驱动"></a>集成的驱动</h2><p>　　本辑驱动选自由天空的驱动<em>《自由天空综合驱动包SkyDriverXP_V9.5 精简版》</em>。光盘根目录带有ghost镜像浏览器。在只需要驱动但又忘了带驱动盘的时候，可以一盘多用，把里面的驱动提取出来使用。(位于c:\windows\drivers)</p>
-<h4 id="SkyDriverXP-V9-5驱动包简述"><a href="#SkyDriverXP-V9-5驱动包简述" class="headerlink" title="SkyDriverXP_V9.5驱动包简述:"></a>SkyDriverXP_V9.5驱动包简述:</h4><ol>
-<li>综合驱动包以全面为主导，收集了大量目前流行的硬件设备驱动。</li>
-<li>适用于WinXP_32Bit平台，部份驱动去除了对Win2000以及64Bit平台的支持。</li>
-<li>包含DrvS3硬件智能判断驱动选择程序及相关组件，可在桌面环境下全静默安装已解压的驱动。</li>
-<li>在封装部署环境使用时，请在外部接口直接调用DrvS3主程序即可。 </li>
-<li>本驱动包尽可能提供自发布日起最新流行硬件的支持。详细的驱动列表，请打开GHO镜像查看<strong>c:\windows\drivers\驱动说明.txt 文件</strong></li>
-</ol>
-<h2 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h2><p>　　本系统配有系统快速设置工具。默认已进行下列设置。</p>
-<ul>
-<li>关闭硬盘各分区的默认共享(如C$、D$、E$ ……)</li>
-<li>关闭管理默认共享(ADMIN$)</li>
-<li>防止利用IPC$建立空连接</li>
-<li>关闭远程注册表服务(Remote Registry)</li>
-<li>删除了XP原有的两个隐藏帐户HelpAssistant和SUPPORT_388945a0</li>
-<li>用户帐户：无新建用户，仅保留administrator，密码为空。（用户装好系统后请及时加密码）</li>
-<li>局域网共享：默认不通</li>
-<li>关闭自动运行</li>
-<li>………………</li>
-</ul>
-<h2 id="附带的软件"><a href="#附带的软件" class="headerlink" title="附带的软件"></a>附带的软件</h2><ul>
-<li>WinRAR 3.80</li>
-<li>ACDsee 5.01 中文版</li>
-<li>360安全卫士5.2</li>
-<li>Foxit Reader 2.3</li>
-<li>极速QQ2009 SP2</li>
-<li>暴风影音3.9</li>
-<li>世界之窗浏览器3.0</li>
-<li>迅雷5.9落雪梨花版</li>
-<li>千千静听5.5</li>
-<li>Windows Media Player 10 中文版</li>
-<li>Office 2003 SP3 含Word、Excel、Powerpoint三大组件</li>
-<li>包括字体：方正姚体、隶书、幼圆、华文行楷、华文新魏</li>
-</ul>
-<h2 id="位于光盘启动菜单的工具"><a href="#位于光盘启动菜单的工具" class="headerlink" title="位于光盘启动菜单的工具"></a>位于光盘启动菜单的工具</h2><ul>
-<li>WINDOWS PE 光盘微型系统</li>
-<li>JS DOS 工具箱</li>
-<li>DM 9.57万用版</li>
-<li>Partition Magic 8.05繁体版</li>
-<li>瞬间把硬盘分成四个区</li>
-<li>Ghost 11</li>
-<li>效率源硬盘检测修复程序</li>
-<li>微软内存诊断检测工具</li>
-<li>用户登录密码破解 (Win2k/2003/XP)</li>
-</ul>
-<h2 id="鸣谢"><a href="#鸣谢" class="headerlink" title="鸣谢"></a>鸣谢</h2><p><em>（排名不分前后）</em><br>Deepin<br>怡水若寒<br>小兵<br>Skyfree<br>Donghai  </p>
-<p>极速论坛 <a href="http://bbs.4speed.cn/" target="_blank" rel="external">http://bbs.4speed.cn/</a><br>自由天空论坛 <a href="http://www.freeskycd.cn/bbs/" target="_blank" rel="external">http://www.freeskycd.cn/bbs//</a><br>深度技术论坛 <a href="http://bbs.deepin.org/" target="_blank" rel="external">http://bbs.deepin.org/</a><br>龙帝国论坛 <a href="http://bbs.mscode.cc/" target="_blank" rel="external">http://bbs.mscode.cc/</a><br>JS工作室 <a href="http://js.nn10z.cn/" target="_blank" rel="external">http://js.nn10z.cn/</a><br>等许许多多知名或不知名的网友，在此我表示感谢！</p>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
-<li><p>本作品是与网友交流系统封装部署经验，或可作临时安装测试PC硬件之用。请在安装后24小时内删除。若需要长期使用，请购买正版系统及软件。</p>
-</li>
-<li><p>本作品是无偿提供，作者仅偶尔对使用者作一些友情帮助，但恕不对造成的损失负责。</p>
-</li>
-</ol>
-<p>完成日期 2009.7.28<br>JS<br>2009年07月</p>
-<h2 id="相关图片"><a href="#相关图片" class="headerlink" title="相关图片"></a>相关图片</h2><img src="/2008/08/13/ghostxp-js/ghostxp_1.jpeg" alt="ghostxp_1" title="ghostxp_1">
-<p>　<br><img src="/2008/08/13/ghostxp-js/ghostxp_2.jpeg" alt="ghostxp_2" title="ghostxp_2"><br>　<br><img src="/2008/08/13/ghostxp-js/ghostxp_3.jpeg" alt="ghostxp_3" title="ghostxp_3"><br>　<br><img src="/2008/08/13/ghostxp-js/ghostxp_4.jpeg" alt="ghostxp_4" title="ghostxp_4"><br>　<br><img src="/2008/08/13/ghostxp-js/ghostxp_5.jpeg" alt="ghostxp_5" title="ghostxp_5"><br>　<br><img src="/2008/08/13/ghostxp-js/ghostxp_6.jpeg" alt="ghostxp_6" title="ghostxp_6"><br>　<br><img src="/2008/08/13/ghostxp-js/ghostxp_7.jpeg" alt="ghostxp_7" title="ghostxp_7"><br>　<br><img src="/2008/08/13/ghostxp-js/ghostxp_8.jpeg" alt="ghostxp_8" title="ghostxp_8">
-　</p>
-
+        
+          <p class="article-more-link">
+            <a href="/2008/08/13/ghostxp-js/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2008/08/13/ghostxp-js/" data-id="cizja3zwj0002m9zxsys7e742" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2008/08/13/ghostxp-js/" data-id="cizjv6jsm0002pjzxgnikfl4l" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
+  
+    <article id="post-dos-toolkit" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/04/27/dos-toolkit/" class="article-date">
+  <time datetime="2008-04-27T08:56:00.000Z" itemprop="datePublished">2008-04-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/04/27/dos-toolkit/">JS DOS 工具箱</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>　　呵呵，这个算是首发的，以前的原型是DOS工具箱，现在加了PE(支持上网)等功能。</p>
+        
+          <p class="article-more-link">
+            <a href="/2008/04/27/dos-toolkit/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.j3l11234.com/2008/04/27/dos-toolkit/" data-id="cizjv6jse0000pjzxikfv2zxc" class="article-share-link">Share</a>
       
       
     </footer>
@@ -661,10 +542,6 @@
           </li>
         
           <li>
-            <a href="/2017/02/22/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
             <a href="/2016/12/04/vue-note/">Vue 笔记</a>
           </li>
         
@@ -674,6 +551,10 @@
         
           <li>
             <a href="/2016/11/23/yum-remove-with-exclude/">在 yum remove 时保留特定依赖</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/09/hdzx_v4-launched/">学活新版本系统上线了</a>
           </li>
         
       </ul>

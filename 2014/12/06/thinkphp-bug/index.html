@@ -5,16 +5,16 @@
   
   <title>解决ThinkPHP模版中条件表达式的匹配问题 | JS工作室</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前几天弄项目发现这个问题，在模版文件中，$apply是一个数组，但是总是匹配不上。　　模版的代码如下:123&amp;lt;if condition=&quot;$plist.name eq $apply.plan_province&quot;&amp;gt;    &amp;lt;option value=&quot;$plist.name&quot;&amp;gt;&amp;#123;$plist.name&amp;#125;&amp;lt;/option&amp;gt;&amp;lt;/if&amp;gt">
+  <meta name="description" content="前几天弄项目发现这个问题，在模版文件中，$apply是一个数组，但是总是匹配不上。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="解决ThinkPHP模版中条件表达式的匹配问题">
 <meta property="og:url" content="http://blog.j3l11234.com/2014/12/06/thinkphp-bug/index.html">
 <meta property="og:site_name" content="JS工作室">
-<meta property="og:description" content="前几天弄项目发现这个问题，在模版文件中，$apply是一个数组，但是总是匹配不上。　　模版的代码如下:123&amp;lt;if condition=&quot;$plist.name eq $apply.plan_province&quot;&amp;gt;    &amp;lt;option value=&quot;$plist.name&quot;&amp;gt;&amp;#123;$plist.name&amp;#125;&amp;lt;/option&amp;gt;&amp;lt;/if&amp;gt">
+<meta property="og:description" content="前几天弄项目发现这个问题，在模版文件中，$apply是一个数组，但是总是匹配不上。">
 <meta property="og:updated_time" content="2014-12-06T10:06:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解决ThinkPHP模版中条件表达式的匹配问题">
-<meta name="twitter:description" content="前几天弄项目发现这个问题，在模版文件中，$apply是一个数组，但是总是匹配不上。　　模版的代码如下:123&amp;lt;if condition=&quot;$plist.name eq $apply.plan_province&quot;&amp;gt;    &amp;lt;option value=&quot;$plist.name&quot;&amp;gt;&amp;#123;$plist.name&amp;#125;&amp;lt;/option&amp;gt;&amp;lt;/if&amp;gt">
+<meta name="twitter:description" content="前几天弄项目发现这个问题，在模版文件中，$apply是一个数组，但是总是匹配不上。">
   
     <link rel="alternate" href="/atom.xml" title="JS工作室" type="application/atom+xml">
   
@@ -85,7 +85,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>　　前几天弄项目发现这个问题，在模版文件中，<code>$apply</code>是一个数组，但是总是匹配不上。<br>　　模版的代码如下:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="keyword">if</span> condition=<span class="string">"$plist.name eq $apply.plan_province"</span>&gt;</div><div class="line">    &lt;option value=<span class="string">"$plist.name"</span>&gt;&#123;$plist.name&#125;&lt;/option&gt;</div><div class="line">&lt;/<span class="keyword">if</span>&gt;;</div></pre></td></tr></table></figure></p>
+        <p>　　前几天弄项目发现这个问题，在模版文件中，<code>$apply</code>是一个数组，但是总是匹配不上。<br><a id="more"></a><br>　　模版的代码如下:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="keyword">if</span> condition=<span class="string">"$plist.name eq $apply.plan_province"</span>&gt;</div><div class="line">    &lt;option value=<span class="string">"$plist.name"</span>&gt;&#123;$plist.name&#125;&lt;/option&gt;</div><div class="line">&lt;/<span class="keyword">if</span>&gt;;</div></pre></td></tr></table></figure></p>
 <p>　　经过查看Runtime里的编译模版，发现condition表达式转换成了：<br><code>condition=&quot;$plist[&quot;name&quot;] == $apply.plan_province&quot;</code><br>　　然而我们期望的是替换为：<br> <code>condition=&quot;$plist[&quot;name&quot;] == $apply[&#39;plan_province&#39;]&quot;</code></p>
 <p>　　问题出现在这里，<code>eq</code>后边的变量<code>$apply.plan_province</code>并没有被转换为<code>$apply[&#39;plan_province&#39;]</code>，经过跟踪发现是<code>ThinkPHP/Library/Think/Template/TagLib.class.php</code>中的代码导致了这个问题。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">```PHP</div><div class="line">/**</div><div class="line">     * 解析条件表达式</div><div class="line">     * @access public</div><div class="line">     * @param string $condition 表达式标签内容</div><div class="line">     * @return array</div><div class="line">*/</div><div class="line">public function parseCondition($condition) &#123;</div><div class="line">    $condition = str_ireplace(array_keys($this-&gt;comparison),array_values($this-&gt;comparison),$condition);</div><div class="line">    $condition = preg_replace(&apos;/$(w+):(w+)s/is&apos;,&apos;$\1-&gt;\2 &apos;,$condition);</div><div class="line">    switch(strtolower(C(&apos;TMPL_VAR_IDENTIFY&apos;))) &#123;</div><div class="line">        case &apos;array&apos;: // 识别为数组</div><div class="line">            $condition = preg_replace(&apos;/$(w+).(w+)s/is&apos;,&apos;$\1[&quot;\2&quot;] &apos;,$condition);</div><div class="line">            break;</div><div class="line">        case &apos;obj&apos;:  // 识别为对象</div><div class="line">            $condition = preg_replace(&apos;/$(w+).(w+)s/is&apos;,&apos;$\1-&gt;\2 &apos;,$condition);</div><div class="line">                break;</div><div class="line">            default:  // 自动判断数组或对象 只支持二维</div><div class="line">                $condition = preg_replace(&apos;/$(w+).(w+)s/is&apos;,&apos;(is_array($\1)?$\1[&quot;\2&quot;]:$\1-&gt;\2) &apos;,$condition);</div><div class="line">   &#125;</div><div class="line">    if(false !== strpos($condition, &apos;$Think&apos;))</div><div class="line">        $condition = preg_replace_callback(&apos;/($Think.*?)s/is&apos;, array($this, &apos;parseThinkVar&apos;), $condition);</div><div class="line">    return $condition;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>　　根据<code>$condition = preg_replace(&#39;/$(w+).(w+)s/is&#39;,&#39;$\1[&quot;\2&quot;] &#39;,$condition)</code> 大概可以猜出来，里面的“s”表示要匹配一个空格，比如<code>[$plist.name ]</code>就可以匹配到，<code>[$apply.plan_province]</code>就不行，当然了，在表达式后面加一个空格，可以解决问题： </p>
@@ -96,7 +96,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2014/12/06/thinkphp-bug/" data-id="cizja3zx60009m9zxx8342gy4" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2014/12/06/thinkphp-bug/" data-id="cizjv6jt20008pjzxsj9h7npd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -179,10 +179,6 @@
           </li>
         
           <li>
-            <a href="/2017/02/22/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
             <a href="/2016/12/04/vue-note/">Vue 笔记</a>
           </li>
         
@@ -192,6 +188,10 @@
         
           <li>
             <a href="/2016/11/23/yum-remove-with-exclude/">在 yum remove 时保留特定依赖</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/09/hdzx_v4-launched/">学活新版本系统上线了</a>
           </li>
         
       </ul>

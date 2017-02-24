@@ -5,19 +5,16 @@
   
   <title>CentOS下fail2ban安装与配置教程 | JS工作室</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="介绍fail2ban用于监视系统日志，通过正则表达式匹配错误错误信息，设置一定的条件触发相应的屏蔽动作。 在笔者的vps里，主要是用于ssh的保护，ssh登录错误的时候会记录到 /var/log/secure，fail2ban通过 gamin检测到新增日志，10min内同一ip连续登陆5次就会封禁30min。 当然，一个足够的强密码也是必须的！
-官方主页：http://www.fail2ban.o">
+  <meta name="description" content="介绍fail2ban用于监视系统日志，通过正则表达式匹配错误错误信息，设置一定的条件触发相应的屏蔽动作。 在笔者的vps里，主要是用于ssh的保护，ssh登录错误的时候会记录到 /var/log/secure，fail2ban通过 gamin检测到新增日志，10min内同一ip连续登陆5次就会封禁30min。 当然，一个足够的强密码也是必须的！">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CentOS下fail2ban安装与配置教程">
 <meta property="og:url" content="http://blog.j3l11234.com/2015/09/21/centos-fail2ban/index.html">
 <meta property="og:site_name" content="JS工作室">
-<meta property="og:description" content="介绍fail2ban用于监视系统日志，通过正则表达式匹配错误错误信息，设置一定的条件触发相应的屏蔽动作。 在笔者的vps里，主要是用于ssh的保护，ssh登录错误的时候会记录到 /var/log/secure，fail2ban通过 gamin检测到新增日志，10min内同一ip连续登陆5次就会封禁30min。 当然，一个足够的强密码也是必须的！
-官方主页：http://www.fail2ban.o">
+<meta property="og:description" content="介绍fail2ban用于监视系统日志，通过正则表达式匹配错误错误信息，设置一定的条件触发相应的屏蔽动作。 在笔者的vps里，主要是用于ssh的保护，ssh登录错误的时候会记录到 /var/log/secure，fail2ban通过 gamin检测到新增日志，10min内同一ip连续登陆5次就会封禁30min。 当然，一个足够的强密码也是必须的！">
 <meta property="og:updated_time" content="2015-09-20T18:34:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CentOS下fail2ban安装与配置教程">
-<meta name="twitter:description" content="介绍fail2ban用于监视系统日志，通过正则表达式匹配错误错误信息，设置一定的条件触发相应的屏蔽动作。 在笔者的vps里，主要是用于ssh的保护，ssh登录错误的时候会记录到 /var/log/secure，fail2ban通过 gamin检测到新增日志，10min内同一ip连续登陆5次就会封禁30min。 当然，一个足够的强密码也是必须的！
-官方主页：http://www.fail2ban.o">
+<meta name="twitter:description" content="介绍fail2ban用于监视系统日志，通过正则表达式匹配错误错误信息，设置一定的条件触发相应的屏蔽动作。 在笔者的vps里，主要是用于ssh的保护，ssh登录错误的时候会记录到 /var/log/secure，fail2ban通过 gamin检测到新增日志，10min内同一ip连续登陆5次就会封禁30min。 当然，一个足够的强密码也是必须的！">
   
     <link rel="alternate" href="/atom.xml" title="JS工作室" type="application/atom+xml">
   
@@ -89,6 +86,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>fail2ban用于监视系统日志，通过正则表达式匹配错误错误信息，设置一定的条件触发相应的屏蔽动作。<br> 在笔者的vps里，主要是用于ssh的保护，ssh登录错误的时候会记录到 <strong>/var/log/secure</strong>，fail2ban通过 gamin检测到新增日志，10min内同一ip连续登陆5次就会封禁30min。<br> 当然，一个足够的强密码也是必须的！</p>
+<a id="more"></a>
 <p>官方主页：<a href="http://www.fail2ban.org/wiki/index.php/Main_Page" target="_blank" rel="external">http://www.fail2ban.org/wiki/index.php/Main_Page</a></p>
 <p>github：<a href="https://github.com/fail2ban/fail2ban" target="_blank" rel="external">https://github.com/fail2ban/fail2ban</a></p>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p> 这里有两种安装方式，使用yum安装或者通过rpm安装。笔者的系统版本是CentOS-6.7</p>
@@ -130,7 +128,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2015/09/21/centos-fail2ban/" data-id="cizja3zx9000bm9zxgkuaw254" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2015/09/21/centos-fail2ban/" data-id="cizjv6jtc000epjzxxd8embv8" class="article-share-link">Share</a>
       
       
     </footer>
@@ -213,10 +211,6 @@
           </li>
         
           <li>
-            <a href="/2017/02/22/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
             <a href="/2016/12/04/vue-note/">Vue 笔记</a>
           </li>
         
@@ -226,6 +220,10 @@
         
           <li>
             <a href="/2016/11/23/yum-remove-with-exclude/">在 yum remove 时保留特定依赖</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/09/hdzx_v4-launched/">学活新版本系统上线了</a>
           </li>
         
       </ul>

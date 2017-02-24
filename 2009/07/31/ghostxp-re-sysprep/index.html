@@ -7,22 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="最近有位朋友(名字忘了，致歉)问二次封装的问题，今天来了点兴致，来一次封装实战。
 
-　　母盘使用donghai老师最新可以信任的版本GhostXP_SP3电脑公司特别版_v9.2　　donghai老师是我的第一位封装老师，现在他可以确信的作品不明，这个算是一个怀念吧 
-
-
-
-ISO文件信息文件：F:\GhostXPSP3电脑公司特别版  \GhostXP_SP3电脑公司特别版_v9.2.is">
+　　母盘使用donghai老师最新可以信任的版本GhostXP_SP3电脑公司特别版_v9.2　　donghai老师是我的第一位封装老师，现在他可以确信的作品不明，这个算是一个怀念吧">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GHOSTXP二次封装实战">
 <meta property="og:url" content="http://blog.j3l11234.com/2009/07/31/ghostxp-re-sysprep/index.html">
 <meta property="og:site_name" content="JS工作室">
 <meta property="og:description" content="最近有位朋友(名字忘了，致歉)问二次封装的问题，今天来了点兴致，来一次封装实战。
 
-　　母盘使用donghai老师最新可以信任的版本GhostXP_SP3电脑公司特别版_v9.2　　donghai老师是我的第一位封装老师，现在他可以确信的作品不明，这个算是一个怀念吧 
-
-
-
-ISO文件信息文件：F:\GhostXPSP3电脑公司特别版  \GhostXP_SP3电脑公司特别版_v9.2.is">
+　　母盘使用donghai老师最新可以信任的版本GhostXP_SP3电脑公司特别版_v9.2　　donghai老师是我的第一位封装老师，现在他可以确信的作品不明，这个算是一个怀念吧">
 <meta property="og:image" content="http://blog.j3l11234.com/2009/07/31/ghostxp-re-sysprep/sysprep_01.jpg">
 <meta property="og:image" content="http://blog.j3l11234.com/2009/07/31/ghostxp-re-sysprep/sysprep_02.jpg">
 <meta property="og:image" content="http://blog.j3l11234.com/2009/07/31/ghostxp-re-sysprep/sysprep_03.jpg">
@@ -45,11 +37,7 @@ ISO文件信息文件：F:\GhostXPSP3电脑公司特别版  \GhostXP_SP3电脑�
 <meta name="twitter:title" content="GHOSTXP二次封装实战">
 <meta name="twitter:description" content="最近有位朋友(名字忘了，致歉)问二次封装的问题，今天来了点兴致，来一次封装实战。
 
-　　母盘使用donghai老师最新可以信任的版本GhostXP_SP3电脑公司特别版_v9.2　　donghai老师是我的第一位封装老师，现在他可以确信的作品不明，这个算是一个怀念吧 
-
-
-
-ISO文件信息文件：F:\GhostXPSP3电脑公司特别版  \GhostXP_SP3电脑公司特别版_v9.2.is">
+　　母盘使用donghai老师最新可以信任的版本GhostXP_SP3电脑公司特别版_v9.2　　donghai老师是我的第一位封装老师，现在他可以确信的作品不明，这个算是一个怀念吧">
 <meta name="twitter:image" content="http://blog.j3l11234.com/2009/07/31/ghostxp-re-sysprep/sysprep_01.jpg">
   
     <link rel="alternate" href="/atom.xml" title="JS工作室" type="application/atom+xml">
@@ -125,8 +113,7 @@ ISO文件信息文件：F:\GhostXPSP3电脑公司特别版  \GhostXP_SP3电脑�
 <p>　　最近有位朋友(名字忘了，致歉)问二次封装的问题，今天来了点兴致，来一次封装实战。</p>
 </blockquote>
 <p>　　母盘使用donghai老师最新可以信任的版本GhostXP_SP3电脑公司特别版_v9.2<br>　　donghai老师是我的第一位封装老师，现在他可以确信的作品不明，这个算是一个怀念吧 </p>
-<ignore_js_op>
-
+<a id="more"></a>
 <img src="/2009/07/31/ghostxp-re-sysprep/sysprep_01.jpg" alt="sysprep_01" title="sysprep_01">
 <h4 id="ISO文件信息"><a href="#ISO文件信息" class="headerlink" title="ISO文件信息"></a>ISO文件信息</h4><p><strong>文件</strong>：F:\GhostXP<em>SP3电脑公司特别版  </em>\GhostXP_SP3电脑公司特别版_v9.2.iso<br><strong>大小</strong>：719564800 字节<br><strong>修改时间</strong>：2008年8月31日, 20:18:40<br><strong>MD5</strong>：C5639A1E30EF31CF68D87BE4A301CC88<br><strong>SHA1</strong>： 30313025774076E5999E2D929D600E3FBE3BF694<br><strong>CRC32</strong>：E0F3683E </p>
 <p>　　推荐在虚拟机中进行，因为我们的目标是二次封装，在还原完ghost镜像之后，进入Pe，删除原配的驱动包(把 <code>C:\windows\drivers</code>目录下的文件删除)，把<code>C:\windows\runonce\注册组件时运行\任务编排.cmd</code>里面的前四行内容删去。<br>　　原因很简单，删除驱动，就可以保持系统在驱动方面的纯净(注册表的另说)。删除<code>任务编排.cmd</code>里边的批处理，更是为了纯净。<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_02.jpg" alt="sysprep_02" title="sysprep_02"></p>
@@ -142,11 +129,11 @@ ISO文件信息文件：F:\GhostXPSP3电脑公司特别版  \GhostXP_SP3电脑�
 <p>　　封装完之后进入Pe删除一些垃圾。<br>删除<code>C:\Documents and Settings\Administrator\Local Settings\Application Data\IconCache.db</code>。<br>删除<code>C:\Documents and Settings\All Users\Documents\My Music\示例音乐\北京2008一起飞.wma</code>。<br>删除<code>C:\Documents and Settings\Administrator\Local Settings\Application Data\Microsoft\Media Player\*.*</code>。<br>　　用小兵的DeepinXP中的<code>C:\WINDOWS\Driver Cache\i386\*.*</code>来替换当前的文件。<br>删除<code>C:\WINDOWS\system32\CatRoot2</code>。<br>删除<code>C:\WINDOWS\system32\dllcache\*.*</code>。<br>删除<code>C:\WINDOWS\system32\config\*.sav</code>。<br>删除所有的<code>*.log</code>。<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_13.jpg" alt="sysprep_13" title="sysprep_13"><br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_14.jpg" alt="sysprep_14" title="sysprep_14"></p>
 <p>　　开始测试，十分成功<br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_15.jpg" alt="sysprep_15" title="sysprep_15"><br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_16.jpg" alt="sysprep_16" title="sysprep_16"><br><img src="/2009/07/31/ghostxp-re-sysprep/sysprep_17.jpg" alt="sysprep_17" title="sysprep_17"></p>
 <p>呵呵<br>这个二次封装实战感觉挺成功的<br>但是只封装了一个纯净版<br>体积控制方面感觉可以(感谢小兵老师)<br>我的第一次封装也是二次封装<br>回想起来很怀念。</p>
-</ignore_js_op>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2009/07/31/ghostxp-re-sysprep/" data-id="cizja3zx00005m9zxcp6convx" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2009/07/31/ghostxp-re-sysprep/" data-id="cizjv6jso0003pjzxm7750ij3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -229,10 +216,6 @@ ISO文件信息文件：F:\GhostXPSP3电脑公司特别版  \GhostXP_SP3电脑�
           </li>
         
           <li>
-            <a href="/2017/02/22/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
             <a href="/2016/12/04/vue-note/">Vue 笔记</a>
           </li>
         
@@ -242,6 +225,10 @@ ISO文件信息文件：F:\GhostXPSP3电脑公司特别版  \GhostXP_SP3电脑�
         
           <li>
             <a href="/2016/11/23/yum-remove-with-exclude/">在 yum remove 时保留特定依赖</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/09/hdzx_v4-launched/">学活新版本系统上线了</a>
           </li>
         
       </ul>
