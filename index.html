@@ -95,7 +95,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2017/02/24/ghost2hexo/" data-id="cizk09uhj000kunzxo5ujbsu2" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2017/02/24/ghost2hexo/" data-id="cizm4onl2000jlmzxk9faayoj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -136,7 +136,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/12/04/vue-note/" data-id="cizk09uhh000junzx1r8i93xn" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/12/04/vue-note/" data-id="cizm4onl1000ilmzxig86j8u6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -184,7 +184,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/11/25/update-webpack-1to2/" data-id="cizk09uhb000hunzx12krnajj" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/11/25/update-webpack-1to2/" data-id="cizm4onl4000klmzxurp1busq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -227,7 +227,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/11/23/yum-remove-with-exclude/" data-id="cizk09uh9000gunzxaqy2nju9" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/11/23/yum-remove-with-exclude/" data-id="cizm4onl0000glmzxxtq6p8ci" class="article-share-link">Share</a>
       
       
     </footer>
@@ -271,7 +271,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/10/09/hdzx_v4-launched/" data-id="cizk09uhe000iunzxvlgo9ni7" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/10/09/hdzx_v4-launched/" data-id="cizm4onl1000hlmzxh3t2e2zz" class="article-share-link">Share</a>
       
       
     </footer>
@@ -310,7 +310,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/09/19/selinux-nginx/" data-id="cizk09uh4000funzxgeh9y8pe" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/09/19/selinux-nginx/" data-id="cizm4onkx000elmzx77x0f66e" class="article-share-link">Share</a>
       
       
     </footer>
@@ -336,7 +336,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/19/nginx-url-prefix-vhost/">nginx以url前缀作为虚拟主机</a>
+      <a class="article-title" href="/2016/09/19/nginx-url-prefix-vhost/">Nginx以url前缀作为虚拟主机</a>
     </h1>
   
 
@@ -344,12 +344,28 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>留坑</p>
+        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>仅通过IP或者单一域名访问的情况下，根据不同的url前缀，指向不同的根目录。给用户的感觉是访问了不同的站点。</p>
+<p>例如<code>http://localhost/aaa</code>则访问站点a，<code>http://localhost/bbb</code>则访问站点b，<code>http://localhost/aaa/ccc</code>则访问站点c</p>
+<h2 id="真正的Vhost"><a href="#真正的Vhost" class="headerlink" title="真正的Vhost"></a>真正的Vhost</h2><p>真正意义上Vhost，是使用域名作为区分。也就是<code>server_name</code>字段。这类配置方式广为人知。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen       80;</div><div class="line">    server_name  www.aaa.com;</div><div class="line"></div><div class="line">    charset utf-8;</div><div class="line">    access_log  /var/log/nginx/log/aaa.access.log  main;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        root   /www/aaa;</div><div class="line">        index  index.html index.htm;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen       80;</div><div class="line">    server_name  www.bbb.com;</div><div class="line"></div><div class="line">    charset utf-8;</div><div class="line">    access_log  /var/log/nginx/log/bbb.access.log  main;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        root   /www/bbb;</div><div class="line">        index  index.html index.htm;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="URL前缀区分"><a href="#URL前缀区分" class="headerlink" title="URL前缀区分"></a>URL前缀区分</h2><p>要通过url前缀区来区分站点，本质上还是通过配置多级<code>location</code>来实现，顶层使用<code>location ^~</code>作为区分，里面有独立的<code>access_log</code>策略，有嵌套的<code>location</code>作为动态静态控制。</p>
+<p>不过笔者在实践的时候，还是遇到了一些小坑。</p>
+<h3 id="root还是alias"><a href="#root还是alias" class="headerlink" title="root还是alias"></a>root还是alias</h3><p>根据官方讲义<br><a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#alias" target="_blank" rel="external">http://nginx.org/en/docs/http/ngx_http_core_module.html#alias</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">location /images/ &#123;</div><div class="line">    alias /data/w3/images/;</div><div class="line">&#125;</div><div class="line"></div><div class="line"># or</div><div class="line"></div><div class="line">location /images/ &#123;</div><div class="line">    root /data/w3;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>使用两个配置，在访问<code>lcoalhost/images/a.jpg</code>时，最终读取的都是<code>/data/w3/images/a.jpg</code>。<br>使用<code>root</code>，<code>location</code>后的URI也会一并包含在访问路径中，<code>/data/w3/</code>+<code>images/a.jpg</code>。<br>使用<code>alias</code>，<code>location</code>后的URI不回包含在访问路径中，<code>/data/w3/images/</code>+<code>a.jpg</code>。</p>
+<p><code>alias</code>还可以实现如下的高级用法，不过<code>alias</code>的路径一定要有<code>/</code>结尾，不然就妥妥的404吧。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">location ~ ^/users/(.+\.(?:gif|jpe?g|png))$ &#123;</div><div class="line">    alias /data/w3/images/$1;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="不带斜杠的情况"><a href="#不带斜杠的情况" class="headerlink" title="不带斜杠的情况"></a>不带斜杠的情况</h3><p>访问<code>http://localhost/aaa</code>和<code>http://localhost/aaa/</code>的时候，都应该视为访问站点a。这里针对<code>/aaa</code>做了跳转的处理方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">location = /aaa &#123;</div><div class="line">    rewrite /aaa /aaa/ permanent;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="嵌套路径"><a href="#嵌套路径" class="headerlink" title="嵌套路径"></a>嵌套路径</h3><p>针对<code>http://localhost/aaa/ccc</code>指向站点c的情况。需要使用<code>location ^~</code>前缀匹配的方式，因为nginx在进行location匹配的时候，会寻找尽可能匹配的情况，这于先后顺序无关。<br>比如，访问<code>http://localhost/aaa/ccc</code>会匹配到下一条。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">location ^~ /aaa/ &#123;</div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line">location ^~ /aaa/ccc &#123;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h3><p>通过fastcgi访问php时。<code>$fastcgi_script_name</code>将被赋值成URI，或者是URI+<code>/index.php</code>。<br>在访问<code>http://localhost/aaa/</code>时，<code>$fastcgi_script_name</code>为<code>/aaa/index.php</code>，但<code>aaa</code>是不应出现在变量中，否则会导致路径错误。</p>
+<p>我们使用<code>fastcgi_split_path_info</code>对URI进行处理，略去<code>aaa</code>前缀部分，并设置正确的<code>SCRIPT_FILENAME</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">location ~ ^/aaa/(.+\.php)(.*)$ &#123;</div><div class="line">    fastcgi_pass   127.0.0.1:9000;</div><div class="line">    fastcgi_index  index.php;</div><div class="line">    fastcgi_split_path_info       ^/aaa/(.+\.php)(.*)$;</div><div class="line">    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</div><div class="line">    fastcgi_param PATH_INFO       $fastcgi_path_info;</div><div class="line">    include        fastcgi_params;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样，对于<code>SCRIPT_FILENAME</code>和<code>SCRIPT_NAME</code>，都可以将其设置为正确值。</p>
+<p>参考讲义<br><a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#variables" target="_blank" rel="external">http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#variables</a><br><a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_split_path_info" target="_blank" rel="external">http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_split_path_info</a></p>
+<h2 id="成品"><a href="#成品" class="headerlink" title="成品"></a>成品</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen       80;</div><div class="line">    server_name  localhost;</div><div class="line"></div><div class="line">    charset utf-8;</div><div class="line">    access_log off;</div><div class="line">    error_log  off;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        root   /usr/share/nginx/html;</div><div class="line">        index  index.html index.htm;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    #============================================================</div><div class="line">    #   aaa</div><div class="line">    #============================================================</div><div class="line">    location = /aaa &#123;</div><div class="line">        rewrite /aaa /aaa/ permanent;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    location ^~ /aaa/ &#123;</div><div class="line">        alias   /www/aaa/;</div><div class="line">        index   index.php;</div><div class="line">        </div><div class="line">        access_log /var/log/nginx/log/aaa.access.log  main;</div><div class="line">        error_log  /var/log/nginx/log/aaa.error.log;</div><div class="line"></div><div class="line">        if (!-e $request_filename)&#123;  </div><div class="line">            rewrite ^/(.*) /aaa/index.php last;  </div><div class="line">        &#125; </div><div class="line"></div><div class="line">        location ~ ^/aaa/(.+\.php)(.*)$ &#123;</div><div class="line">            fastcgi_pass   127.0.0.1:9000;</div><div class="line">            fastcgi_index  index.php;</div><div class="line">            fastcgi_split_path_info       ^/aaa/(.+\.php)(.*)$;</div><div class="line">            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</div><div class="line">            fastcgi_param PATH_INFO       $fastcgi_path_info;</div><div class="line">            include        fastcgi_params;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    #============================================================</div><div class="line">    #   bbb</div><div class="line">    #============================================================</div><div class="line">    location = /bbb &#123;</div><div class="line">        rewrite /bbb /bbb/ permanent;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    location ^~ /bbb/ &#123;</div><div class="line">        alias   /www/bbb/;</div><div class="line">        index   index.php;</div><div class="line"></div><div class="line">        access_log /var/log/nginx/log/bbb.access.log  main;</div><div class="line">        error_log  /var/log/nginx/log/bbb.error.log;</div><div class="line"></div><div class="line">        location ~ ^/bbb/(.+\.php)(.*)$ &#123;</div><div class="line">            fastcgi_pass   127.0.0.1:9000;</div><div class="line">            fastcgi_index  index.php;</div><div class="line">            fastcgi_split_path_info       ^/bbb/(.+\.php)(.*)$;</div><div class="line">            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</div><div class="line">            fastcgi_param PATH_INFO       $fastcgi_path_info;</div><div class="line">            include        fastcgi_params;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    #============================================================</div><div class="line">    #   ccc</div><div class="line">    #============================================================</div><div class="line">    location = /aaa/ccc &#123;</div><div class="line">        rewrite /aaa/ccc /aaa/ccc/ permanent; </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    location ^~ /aaa/ccc/ &#123;</div><div class="line">        alias   /www/ccc/;</div><div class="line">        index   index.php;</div><div class="line">        </div><div class="line">        access_log /var/log/nginx/log/ccc.access.log  main;</div><div class="line">        error_log  /var/log/nginx/log/ccc.error.log;</div><div class="line"></div><div class="line">        if (!-e $request_filename)&#123;  </div><div class="line">            rewrite ^/(.*) /aaa/ccc/index.php last;  </div><div class="line">        &#125; </div><div class="line"></div><div class="line">        location ~ ^/aaa/ccc/(.+\.php)(.*)$ &#123;</div><div class="line">            fastcgi_pass   127.0.0.1:9000;</div><div class="line">            fastcgi_index  index.php;</div><div class="line">            fastcgi_split_path_info       ^/aaa/ccc/(.+\.php)(.*)$;</div><div class="line">            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</div><div class="line">            fastcgi_param PATH_INFO       $fastcgi_path_info;</div><div class="line">            include        fastcgi_params;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/09/19/nginx-url-prefix-vhost/" data-id="cizk09ugx000dunzxq408t2f8" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/09/19/nginx-url-prefix-vhost/" data-id="cizm4onkx000flmzxskv05r4h" class="article-share-link">Share</a>
       
       
     </footer>
@@ -389,7 +405,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/09/13/wordpress2ghost/" data-id="cizk09uh0000eunzxdqo8cmyu" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/09/13/wordpress2ghost/" data-id="cizm4onkv000dlmzx1lnx9yf6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -430,7 +446,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/09/12/centos-hyper-video/" data-id="cizk09ugv000cunzxws66mdye" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/09/12/centos-hyper-video/" data-id="cizm4onkt000clmzx619efb2m" class="article-share-link">Share</a>
       
       
     </footer>
@@ -473,7 +489,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2015/09/21/centos-fail2ban/" data-id="cizk09ugr000bunzx5pcv1sg8" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2015/09/21/centos-fail2ban/" data-id="cizm4onks000blmzx4lln99ws" class="article-share-link">Share</a>
       
       
     </footer>
