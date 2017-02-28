@@ -6,21 +6,18 @@
   <title>Nginx以url前缀作为虚拟主机 | JS工作室</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="需求仅通过IP或者单一域名访问的情况下，根据不同的url前缀，指向不同的根目录。给用户的感觉是访问了不同的站点。
-例如http://localhost/aaa则访问站点a，http://localhost/bbb则访问站点b，http://localhost/aaa/ccc则访问站点c
-真正的Vhost真正意义上Vhost，是使用域名作为区分。也就是server_name字段。这类配置方式广为人知">
+例如http://localhost/aaa则访问站点a，http://localhost/bbb则访问站点b，http://localhost/aaa/ccc则访问站点c">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx以url前缀作为虚拟主机">
 <meta property="og:url" content="http://blog.j3l11234.com/2016/09/19/nginx-url-prefix-vhost/index.html">
 <meta property="og:site_name" content="JS工作室">
 <meta property="og:description" content="需求仅通过IP或者单一域名访问的情况下，根据不同的url前缀，指向不同的根目录。给用户的感觉是访问了不同的站点。
-例如http://localhost/aaa则访问站点a，http://localhost/bbb则访问站点b，http://localhost/aaa/ccc则访问站点c
-真正的Vhost真正意义上Vhost，是使用域名作为区分。也就是server_name字段。这类配置方式广为人知">
+例如http://localhost/aaa则访问站点a，http://localhost/bbb则访问站点b，http://localhost/aaa/ccc则访问站点c">
 <meta property="og:updated_time" content="2017-02-27T13:04:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx以url前缀作为虚拟主机">
 <meta name="twitter:description" content="需求仅通过IP或者单一域名访问的情况下，根据不同的url前缀，指向不同的根目录。给用户的感觉是访问了不同的站点。
-例如http://localhost/aaa则访问站点a，http://localhost/bbb则访问站点b，http://localhost/aaa/ccc则访问站点c
-真正的Vhost真正意义上Vhost，是使用域名作为区分。也就是server_name字段。这类配置方式广为人知">
+例如http://localhost/aaa则访问站点a，http://localhost/bbb则访问站点b，http://localhost/aaa/ccc则访问站点c">
   
     <link rel="alternate" href="/atom.xml" title="JS工作室" type="application/atom+xml">
   
@@ -95,6 +92,7 @@
       
         <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>仅通过IP或者单一域名访问的情况下，根据不同的url前缀，指向不同的根目录。给用户的感觉是访问了不同的站点。</p>
 <p>例如<code>http://localhost/aaa</code>则访问站点a，<code>http://localhost/bbb</code>则访问站点b，<code>http://localhost/aaa/ccc</code>则访问站点c</p>
+<a id="more"></a>
 <h2 id="真正的Vhost"><a href="#真正的Vhost" class="headerlink" title="真正的Vhost"></a>真正的Vhost</h2><p>真正意义上Vhost，是使用域名作为区分。也就是<code>server_name</code>字段。这类配置方式广为人知。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen       80;</div><div class="line">    server_name  www.aaa.com;</div><div class="line"></div><div class="line">    charset utf-8;</div><div class="line">    access_log  /var/log/nginx/log/aaa.access.log  main;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        root   /www/aaa;</div><div class="line">        index  index.html index.htm;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen       80;</div><div class="line">    server_name  www.bbb.com;</div><div class="line"></div><div class="line">    charset utf-8;</div><div class="line">    access_log  /var/log/nginx/log/bbb.access.log  main;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        root   /www/bbb;</div><div class="line">        index  index.html index.htm;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="URL前缀区分"><a href="#URL前缀区分" class="headerlink" title="URL前缀区分"></a>URL前缀区分</h2><p>要通过url前缀区来区分站点，本质上还是通过配置多级<code>location</code>来实现，顶层使用<code>location ^~</code>作为区分，里面有独立的<code>access_log</code>策略，有嵌套的<code>location</code>作为动态静态控制。</p>
 <p>不过笔者在实践的时候，还是遇到了一些小坑。</p>
@@ -114,7 +112,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/09/19/nginx-url-prefix-vhost/" data-id="cizo9xwq6000bp5zxhwtyyklw" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2016/09/19/nginx-url-prefix-vhost/" data-id="cizox7tbd000dfqh9g0ent60t" class="article-share-link">Share</a>
       
       
     </footer>
