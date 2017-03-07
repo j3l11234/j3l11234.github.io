@@ -3,17 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>JS工作室</title>
+  <title>React源码——常见工具类 | JS工作室</title>
   
-    <meta name="keywords" content="j3l11234,HTML5,JavaScript,React">
+    <meta name="keywords" content="React,j3l11234,HTML5,JavaScript,React">
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="JS工作室">
-<meta property="og:url" content="http://blog.j3l11234.com/index.html">
+  <meta name="description" content="PooledClass简介PooledClass是React的基本类库，见字如面，用于将常用类做一个缓冲池，将常用类的实例缓存在内存中，省略其实例化和释放的开销。
+用法1234567891011121314151617181920212223var PooledClass = require(&apos;PooledClass&apos;);class Foo &amp;#123;  constructor(arg) &amp;#1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React源码——常见工具类">
+<meta property="og:url" content="http://blog.j3l11234.com/2017/02/28/react-src-utils/index.html">
 <meta property="og:site_name" content="JS工作室">
+<meta property="og:description" content="PooledClass简介PooledClass是React的基本类库，见字如面，用于将常用类做一个缓冲池，将常用类的实例缓存在内存中，省略其实例化和释放的开销。
+用法1234567891011121314151617181920212223var PooledClass = require(&apos;PooledClass&apos;);class Foo &amp;#123;  constructor(arg) &amp;#1">
+<meta property="og:updated_time" content="2017-03-07T07:33:27.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JS工作室">
+<meta name="twitter:title" content="React源码——常见工具类">
+<meta name="twitter:description" content="PooledClass简介PooledClass是React的基本类库，见字如面，用于将常用类做一个缓冲池，将常用类的实例缓存在内存中，省略其实例化和释放的开销。
+用法1234567891011121314151617181920212223var PooledClass = require(&apos;PooledClass&apos;);class Foo &amp;#123;  constructor(arg) &amp;#1">
   
     <link rel="alternate" href="/atom.xml" title="JS工作室" type="application/atom+xml">
   
@@ -64,9 +71,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-react-src-utils" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-react-src-utils" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/02/28/react-src-utils/" class="article-date">
   <time datetime="2017-02-28T13:47:04.000Z" itemprop="datePublished">2017-02-28</time>
@@ -83,8 +88,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/28/react-src-utils/">React源码——常见工具类</a>
+    <h1 class="article-title" itemprop="name">
+      React源码——常见工具类
     </h1>
   
 
@@ -123,401 +128,41 @@
     </footer>
   </div>
   
-</article>
-
-
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-ghost2hexo" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/24/ghost2hexo/" class="article-date">
-  <time datetime="2017-02-24T01:46:31.000Z" itemprop="datePublished">2017-02-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/24/ghost2hexo/">从Ghost迁移到Hexo</a>
-    </h1>
+    <a href="/2017/02/24/ghost2hexo/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">从Ghost迁移到Hexo</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>迁移的原因，大概是因为node的后端崩了懒得起，又或者是觉得Github Pages很cool，总之一时心血来潮就迁移过来了。</p>
-<p>Hexo是一个博客框架，可以生成静态页面并托管到Github上，用户可以用Html，Markown来编写文章。不用Jekyll的原因啊是因为要捣鼓Ruby的gem，而Hexo是运行在Node.js上的，装起来比较省事。</p>
-        
-          <p class="article-more-link">
-            <a href="/2017/02/24/ghost2hexo/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2017/02/24/ghost2hexo/" data-id="cizpl7xk6000lhczxj52epcbl" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
 
 
+  <section id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="react-src-utils" data-title="React源码——常见工具类" data-url="http://blog.j3l11234.com/2017/02/28/react-src-utils/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'j3l11234'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  </section>
 
 
-  
-    <article id="post-vue-note" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/12/04/vue-note/" class="article-date">
-  <time datetime="2016-12-04T04:42:14.000Z" itemprop="datePublished">2016-12-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/04/vue-note/">Vue 笔记</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><code>vnode.data</code>里，<code>attrs</code>最终成为dom的普通属性，<code>domProps</code>成为内置属性(例如input的value)，决定一个属性是<code>attr</code>还是<code>domProp</code>,可以在<code>render()</code>里指定，如果是模板编译，则需要在模板编译里的<code>mustUseProp()</code>去指定。<br><a href="https://github.com/vuejs/vue/issues/4369" target="_blank" rel="external">https://github.com/vuejs/vue/issues/4369</a><br><a href="https://github.com/vuejs/vue/pull/4382" target="_blank" rel="external">https://github.com/vuejs/vue/pull/4382</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/12/04/vue-note/" data-id="cizpl7xk5000khczxna4nth3z" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-  
-    <article id="post-update-webpack-1to2" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/25/update-webpack-1to2/" class="article-date">
-  <time datetime="2016-11-25T09:41:41.000Z" itemprop="datePublished">2016-11-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/25/update-webpack-1to2/">Webpack 1 更新到 Webpack 2 的蹚坑记</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>　　真的就是手痒才更新到2的…</p>
-</blockquote>
-<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>　　写此文时，webpack更新到2.1.0-beta.27。</p>
-<p>首先运行更新命令：<br><code>npm install webpack@2.1.0-beta.27 --save-dev</code><br>如果要全局更新就使用：<br><code>npm install webpack@2.1.0-beta.27 --save-dev</code></p>
-<p>　　更新完之后，webpack 2 兼容老版本的配置，所以直接运行是没有问题的。据说 webpack 2 的 <strong>tree-shaking</strong> 还可以优化体积。  </p>
-        
-          <p class="article-more-link">
-            <a href="/2016/11/25/update-webpack-1to2/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/11/25/update-webpack-1to2/" data-id="cizpl7xk4000jhczxk4wnlnjq" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-  
-    <article id="post-yum-remove-with-exclude" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/23/yum-remove-with-exclude/" class="article-date">
-  <time datetime="2016-11-22T16:20:36.000Z" itemprop="datePublished">2016-11-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/23/yum-remove-with-exclude/">在 yum remove 时保留特定依赖</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>　　其实这个问题出现得很偶然，就是学校云平台上预装的linux是CentOS7 Desktop，装了一大堆用不到的奇怪玩意……<br>　　为了节约内存和硬盘，还有作为一个前端兼运维的强迫症，用不到的东西肯定就得删掉了，毕竟眼不见为净嘛。</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/11/23/yum-remove-with-exclude/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/11/23/yum-remove-with-exclude/" data-id="cizpl7xk3000ihczx74vno298" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-  
-    <article id="post-hdzx_v4-launched" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/09/hdzx_v4-launched/" class="article-date">
-  <time datetime="2016-10-09T08:36:22.000Z" itemprop="datePublished">2016-10-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/09/hdzx_v4-launched/">学活新版本系统上线了</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>占坑</p>
-<h2 id="Changelog"><a href="#Changelog" class="headerlink" title="Changelog"></a>Changelog</h2>
-        
-          <p class="article-more-link">
-            <a href="/2016/10/09/hdzx_v4-launched/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/10/09/hdzx_v4-launched/" data-id="cizpl7xk1000ghczxqwk4e4e1" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-  
-    <article id="post-selinux-nginx" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/09/19/selinux-nginx/" class="article-date">
-  <time datetime="2016-09-18T17:04:43.000Z" itemprop="datePublished">2016-09-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/19/selinux-nginx/">SELinux下nginx的配置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>留坑</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/09/19/selinux-nginx/" data-id="cizpl7xk0000fhczxys9ji93h" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-  
-    <article id="post-nginx-url-prefix-vhost" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/09/19/nginx-url-prefix-vhost/" class="article-date">
-  <time datetime="2016-09-18T17:04:07.000Z" itemprop="datePublished">2016-09-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/19/nginx-url-prefix-vhost/">Nginx以url前缀作为虚拟主机</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>仅通过IP或者单一域名访问的情况下，根据不同的url前缀，指向不同的根目录。给用户的感觉是访问了不同的站点。</p>
-<p>例如<code>http://localhost/aaa</code>则访问站点a，<code>http://localhost/bbb</code>则访问站点b，<code>http://localhost/aaa/ccc</code>则访问站点c</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/09/19/nginx-url-prefix-vhost/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/09/19/nginx-url-prefix-vhost/" data-id="cizpl7xjz000ehczxeqtuiod3" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-  
-    <article id="post-wordpress2ghost" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/09/13/wordpress2ghost/" class="article-date">
-  <time datetime="2016-09-12T18:09:37.000Z" itemprop="datePublished">2016-09-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/13/wordpress2ghost/">从Wordpress迁移到Ghost</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p> ╮(╯_╰)╭</p>
-<p>虽不敢说乔迁新居，但至少算是把家里装修了下。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/09/13/wordpress2ghost/" data-id="cizpl7xjy000dhczxcg19lhv9" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-  
-    <article id="post-centos-hyper-video" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/09/12/centos-hyper-video/" class="article-date">
-  <time datetime="2016-09-12T05:55:31.000Z" itemprop="datePublished">2016-09-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/12/centos-hyper-video/">改变Hyper-v下Centos7的默认分辨率</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>vi /etc/default/grub<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GRUB_CMDLINE_LINUX=”crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet splash video=hyperv_fb:800×600″</div></pre></td></tr></table></figure></p>
-<p>save.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grub2-mkconfig -o /boot/grub2/grub.cfg</div></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2016/09/12/centos-hyper-video/" data-id="cizpl7xjx000chczxkcgfqxeh" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-  
-
-
-  <nav id="page-nav">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">__('next') &raquo;</a>
-  </nav>
 </section>
         
           <aside id="sidebar">
