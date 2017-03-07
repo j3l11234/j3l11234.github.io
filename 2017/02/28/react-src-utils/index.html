@@ -8,19 +8,16 @@
     <meta name="keywords" content="React,j3l11234,HTML5,JavaScript,React">
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="PooledClass简介PooledClass是React的基本类库，见字如面，用于将常用类做一个缓冲池，将常用类的实例缓存在内存中，省略其实例化和释放的开销。
-用法1234567891011121314151617181920212223var PooledClass = require(&apos;PooledClass&apos;);class Foo &amp;#123;  constructor(arg) &amp;#1">
+  <meta name="description" content="介绍最近读起了React源码，React实现太过巧妙，底层有许多有用的工具类，了解这些工具类，在读源码的时候可以更好更快的理解。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="React源码——常见工具类">
 <meta property="og:url" content="http://blog.j3l11234.com/2017/02/28/react-src-utils/index.html">
 <meta property="og:site_name" content="JS工作室">
-<meta property="og:description" content="PooledClass简介PooledClass是React的基本类库，见字如面，用于将常用类做一个缓冲池，将常用类的实例缓存在内存中，省略其实例化和释放的开销。
-用法1234567891011121314151617181920212223var PooledClass = require(&apos;PooledClass&apos;);class Foo &amp;#123;  constructor(arg) &amp;#1">
-<meta property="og:updated_time" content="2017-03-07T07:33:27.000Z">
+<meta property="og:description" content="介绍最近读起了React源码，React实现太过巧妙，底层有许多有用的工具类，了解这些工具类，在读源码的时候可以更好更快的理解。">
+<meta property="og:updated_time" content="2017-03-07T07:40:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React源码——常见工具类">
-<meta name="twitter:description" content="PooledClass简介PooledClass是React的基本类库，见字如面，用于将常用类做一个缓冲池，将常用类的实例缓存在内存中，省略其实例化和释放的开销。
-用法1234567891011121314151617181920212223var PooledClass = require(&apos;PooledClass&apos;);class Foo &amp;#123;  constructor(arg) &amp;#1">
+<meta name="twitter:description" content="介绍最近读起了React源码，React实现太过巧妙，底层有许多有用的工具类，了解这些工具类，在读源码的时候可以更好更快的理解。">
   
     <link rel="alternate" href="/atom.xml" title="JS工作室" type="application/atom+xml">
   
@@ -97,7 +94,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="PooledClass"><a href="#PooledClass" class="headerlink" title="PooledClass"></a>PooledClass</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>PooledClass是React的基本类库，见字如面，用于将常用类做一个缓冲池，将常用类的实例缓存在内存中，省略其实例化和释放的开销。</p>
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>最近读起了React源码，React实现太过巧妙，底层有许多有用的工具类，了解这些工具类，在读源码的时候可以更好更快的理解。<br><a id="more"></a></p>
+<h2 id="PooledClass"><a href="#PooledClass" class="headerlink" title="PooledClass"></a>PooledClass</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>PooledClass是React的基本类库，见字如面，用于将常用类做一个缓冲池，将常用类的实例缓存在内存中，省略其实例化和释放的开销。</p>
 <h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> PooledClass = <span class="built_in">require</span>(<span class="string">'PooledClass'</span>);</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(arg) &#123;</div><div class="line">    <span class="keyword">this</span>.arg = arg;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  destructor() &#123;</div><div class="line">    <span class="keyword">this</span>.arg = <span class="literal">null</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//初始化，绑定缓存池</span></div><div class="line">PooledClass.addPoolingTo(Foo);</div><div class="line"></div><div class="line"><span class="comment">//从池中取出一个实例</span></div><div class="line"><span class="keyword">let</span> foo = Foo.getPooled(<span class="string">"foo"</span>);</div><div class="line"><span class="comment">//执行constructor</span></div><div class="line"><span class="comment">//foo.arg = "foo"</span></div><div class="line"></div><div class="line"><span class="comment">//释放实例，将实例放回池中</span></div><div class="line">Foo.release(foo);</div><div class="line"><span class="comment">//执行destructor();</span></div></pre></td></tr></table></figure>
 <h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><p><a href="https://github.com/facebook/react/blob/15-stable/src/shared/utils/PooledClass.js" target="_blank" rel="external">https://github.com/facebook/react/blob/15-stable/src/shared/utils/PooledClass.js</a></p>
 <p>Flow 是 Facebook 宣布推出一个开源的 JavaScript 静态类型检查器，旨在发现 JS 程序中的类型错误，以提高程序员的效率和代码质量。React源码使用了Flow。</p>
@@ -120,7 +118,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2017/02/28/react-src-utils/" data-id="cizpl7xk2000hhczxacvpx1ds" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2017/02/28/react-src-utils/" data-id="cizz883v2000h86fykgy1jjk6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li></ul>
