@@ -9,12 +9,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="介绍fail2ban用于监视系统日志，通过正则表达式匹配错误错误信息，设置一定的条件触发相应的屏蔽动作。 在笔者的vps里，主要是用于ssh的保护，ssh登录错误的时候会记录到 /var/log/secure，fail2ban通过 gamin检测到新增日志，10min内同一ip连续登陆5次就会封禁30min。 当然，一个足够的强密码也是必须的！">
+<meta name="keywords">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CentOS下fail2ban安装与配置教程">
 <meta property="og:url" content="http://blog.j3l11234.com/2015/09/21/centos-fail2ban/index.html">
 <meta property="og:site_name" content="JS工作室">
 <meta property="og:description" content="介绍fail2ban用于监视系统日志，通过正则表达式匹配错误错误信息，设置一定的条件触发相应的屏蔽动作。 在笔者的vps里，主要是用于ssh的保护，ssh登录错误的时候会记录到 /var/log/secure，fail2ban通过 gamin检测到新增日志，10min内同一ip连续登陆5次就会封禁30min。 当然，一个足够的强密码也是必须的！">
-<meta property="og:updated_time" content="2015-09-20T18:34:16.000Z">
+<meta property="og:updated_time" content="2017-04-20T02:06:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CentOS下fail2ban安装与配置教程">
 <meta name="twitter:description" content="介绍fail2ban用于监视系统日志，通过正则表达式匹配错误错误信息，设置一定的条件触发相应的屏蔽动作。 在笔者的vps里，主要是用于ssh的保护，ssh登录错误的时候会记录到 /var/log/secure，fail2ban通过 gamin检测到新增日志，10min内同一ip连续登陆5次就会封禁30min。 当然，一个足够的强密码也是必须的！">
@@ -25,7 +26,7 @@
     <link rel="icon" href="/favicon.png">
   
   
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    <!--<link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">-->
   
   <link rel="stylesheet" href="/css/style.css">
   
@@ -62,7 +63,7 @@
         <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.j3l11234.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.j3l11234.com"></form>
       </div>
     </div>
   </div>
@@ -113,6 +114,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># SSH servers</div><div class="line">#</div><div class="line"></div><div class="line">[sshd]</div><div class="line"></div><div class="line">port = ssh</div><div class="line">logpath = %(sshd_log)s</div><div class="line">enabled = true</div></pre></td></tr></table></figure>
 <p>最后就是设置服务自启动了</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chkconfig fail2ban on</div><div class="line">service fail2ban start</div></pre></td></tr></table></figure>
+<h2 id="CentOS7的补充说明"><a href="#CentOS7的补充说明" class="headerlink" title="CentOS7的补充说明"></a>CentOS7的补充说明</h2><p>在CentOS7下可能会出现类似错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">2017-04-19 10:19:30,335 fail2ban.action         [526]: ERROR   ipset create fail2ban-sshd hash:ip timeout 600</div><div class="line">firewall-cmd --direct --add-rule ipv4 filter INPUT 0 -p tcp -m multiport --dports ssh -m set --match-set fail2ban-sshd src -j REJECT --reject-with icmp-port-unreachable -- stdout: &apos;&apos;</div><div class="line">2017-04-19 10:19:30,335 fail2ban.action         [526]: ERROR   ipset create fail2ban-sshd hash:ip timeout 600</div><div class="line">firewall-cmd --direct --add-rule ipv4 filter INPUT 0 -p tcp -m multiport --dports ssh -m set --match-set fail2ban-sshd src -j REJECT --reject-with icmp-port-unreachable -- stderr: &apos;ipset v6.19: Cannot open session to kernel.\n\x1b[91mFirewallD is not running\x1b[00m\n&apos;</div><div class="line">2017-04-19 10:19:30,336 fail2ban.action         [526]: ERROR   ipset create fail2ban-sshd hash:ip timeout 600</div><div class="line">firewall-cmd --direct --add-rule ipv4 filter INPUT 0 -p tcp -m multiport --dports ssh -m set --match-set fail2ban-sshd src -j REJECT --reject-with icmp-port-unreachable -- killed with signal 124 (return code: 252)</div><div class="line">2017-04-19 10:19:30,336 fail2ban.actions        [526]: ERROR   Failed to start jail &apos;sshd&apos; action &apos;firewallcmd-ipset&apos;: Error starting action</div><div class="line">……</div><div class="line">2017-04-19 10:19:41,529 fail2ban.action         [526]: ERROR   ipset add fail2ban-sshd 116.31.116.14 timeout 600 -exist -- stdout: &apos;&apos;</div><div class="line">2017-04-19 10:19:41,530 fail2ban.action         [526]: ERROR   ipset add fail2ban-sshd 116.31.116.14 timeout 600 -exist -- stderr: &apos;ipset v6.19: Cannot open session to kernel.\n&apos;</div><div class="line">2017-04-19 10:19:41,530 fail2ban.action         [526]: ERROR   ipset add fail2ban-sshd 116.31.116.14 timeout 600 -exist -- returned 1</div><div class="line">2017-04-19 10:19:41,531 fail2ban.actions        [526]: ERROR   Failed to execute ban jail &apos;sshd&apos; action &apos;firewallcmd-ipset&apos; info &apos;CallingMap(&#123;&apos;ipjailmatches&apos;: &lt;function &lt;lambda&gt; at 0xb08578&gt;, &apos;matches&apos;: &apos;[……]&apos;, &apos;ip&apos;: &apos;116.31.116.14&apos;, &apos;ipmatches&apos;: &lt;function &lt;lambda&gt; at 0xb08410&gt;, &apos;ipfailures&apos;: &lt;function &lt;lambda&gt; at 0xb086e0&gt;, &apos;time&apos;: 1492568381.402617, &apos;failures&apos;: 40, &apos;ipjailfailures&apos;: &lt;function &lt;lambda&gt; at 0xb08500&gt;&#125;)&apos;: Error banning 116.31.116.14</div></pre></td></tr></table></figure></p>
+<p>CentOS7使用了firewall作为默认防火墙，而fail2ban默认使用<code>firewallcmd-ipset</code>作为封禁动作，但是在基于openvz的vps平台上是不能调用ipset的，所以需要做一些更改。<br>更改<code>/etc/fail2ban/jail.d/00-firewalld.conf</code>文件，将其更改为使用<code>firewallcmd-new</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[DEFAULT]</div><div class="line">#banaction = firewallcmd-ipset</div><div class="line">banaction = firewallcmd-new</div></pre></td></tr></table></figure></p>
 <h2 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h2><p>Q：日志中出现<strong>Error starting action</strong>错误</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">fail2ban.server[2228]: INFO Jail sshd is not a JournalFilter instance</div><div class="line">fail2ban.jail[2228]: INFO Jail &apos;sshd&apos; started</div><div class="line">fail2ban.action[2228]: ERROR iptables -w -N f2b-sshd#012iptables -w -A f2b-sshd -j RETURN#012iptables -w -I INPUT -p tcp -m multiport --dports ssh -j f2b-sshd -- stdout: &apos;&apos;</div><div class="line">fail2ban.action[2228]: ERROR iptables -w -N f2b-sshd#012iptables -w -A f2b-sshd -j RETURN#012iptables -w -I INPUT -p tcp -m multiport --dports ssh -j f2b-sshd -- stderr: &apos;&apos;</div><div class="line">fail2ban.action[2228]: ERROR iptables -w -N f2b-sshd#012iptables -w -A f2b-sshd -j RETURN#012iptables -w -I INPUT -p tcp -m multiport --dports ssh -j f2b-sshd -- returned 2</div><div class="line">fail2ban.actions[2228]: ERROR Failed to start jail &apos;sshd&apos; action &apos;iptables-multiport&apos;: Error starting action</div></pre></td></tr></table></figure>
 <p>A：fail2ban-0.9.3在执行iptable命令时，加上了-w参数用于防止冲突，但是iptables-1.4.20才有这个参数，而CentOS6.7下的是iptables-1.4.7,因此导致iptable的命令执行失败，Github有这个问题：<br><a href="https://github.com/fail2ban/fail2ban/issues/1122" target="_blank" rel="external">https://github.com/fail2ban/fail2ban/issues/1122</a></p>
@@ -133,7 +136,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.j3l11234.com/2015/09/21/centos-fail2ban/" data-id="cizz883up000a86fy2o0u0ni0" class="article-share-link">Share</a>
+      <a data-url="http://blog.j3l11234.com/2015/09/21/centos-fail2ban/" data-id="cjf7u58li00078gvfx16wph0w" class="article-share-link">Share</a>
       
       
     </footer>
@@ -142,19 +145,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/09/12/centos-hyper-video/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2015/03/15/ygys-crack/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          改变Hyper-v下Centos7的默认分辨率
+          愚公移山2Android版金币内购破解
         
       </div>
     </a>
   
   
-    <a href="/2015/03/15/ygys-crack/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/09/12/centos-hyper-video/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">愚公移山2Android版金币内购破解</div>
+      <div class="article-nav-title">改变Hyper-v下Centos7的默认分辨率</div>
     </a>
   
 </nav>
@@ -163,23 +166,12 @@
 </article>
 
 
+  
   <section id="comments">
-    <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="centos-fail2ban" data-title="CentOS下fail2ban安装与配置教程" data-url="http://blog.j3l11234.com/2015/09/21/centos-fail2ban/"></div>
-    <!-- 多说评论框 end -->
-    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:'j3l11234'};
-      (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-      })();
-      </script>
-    <!-- 多说公共JS代码 end -->
+
+   <div id="MyDiscuss" data-site-key="testkey" data-thread-key="thread_key_1"></div>
+  <script charset="utf-8" type="text/javascript" src="http://localhost:3001/public/assets/js/embed.js" ></script>
+  
   </section>
 
 
@@ -188,20 +180,13 @@
           <aside id="sidebar">
   
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">分类</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a></li></ul>
-    </div>
-  </div>
-
 
   
     
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a></li></ul>
     </div>
   </div>
 
@@ -211,7 +196,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React/" style="font-size: 10px;">React</a>
+      <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/React/" style="font-size: 10px;">React</a>
     </div>
   </div>
 
@@ -264,7 +249,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2017 j3l11234<br>
+      &copy; 2018 j3l11234<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
       </br><script src="https://s22.cnzz.com/z_stat.php?id=1253355046&web_id=1253355046" language="JavaScript"></script>
     </div>
